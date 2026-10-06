@@ -41,7 +41,7 @@ Employee (Teams) → HR Assist (Amazon Quick) ─┬─► HR policies (Confluen
 | HR requirements | ⏳ Pending |
 | Enterprise sandbox + Confluence knowledge base | ⏳ Waiting on access |
 | Microsoft Teams deployment | Designed, current priority |
-| SAP SuccessFactors integration | API scope drafted |
+| SAP SuccessFactors integration | API scope verified against SAP API reference |
 | SharePoint embedding | Designed, paused |
 
 ## Repository Guide

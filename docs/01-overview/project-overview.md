@@ -46,7 +46,7 @@
 | Capability | Example | Data source | Status |
 |---|---|---|---|
 | **Answers policy questions** with a reference to the source | "How many casual leaves do I get per year?" | HR policy documents (**Confluence**) | Prototype built (on Google Drive) |
-| **Answers personal HR questions** | "How many leave days do I have left?" / "Is my leave approved?" | **SAP SuccessFactors** (live lookup) | Planned: API scope drafted |
+| **Answers personal HR questions** | "How many leave days do I have left?" / "Is my leave approved?" | **SAP SuccessFactors** (live lookup) | Planned: API scope verified |
 | **Gives location-aware answers** | "Is next Monday a holiday?" for the employee's own location | SuccessFactors job data + holiday calendar | Planned |
 | **Escalates to HR** | Questions it can't answer, exceptions, conflicting policies, explicit requests | Email to HR (Gmail) + internal HR alert (Slack) | Prototype built |
 | **Takes simple actions** (later) | Submit a leave request, after the employee confirms | SuccessFactors | Future phase, if HR wants it |
@@ -120,7 +120,7 @@
 | **1. Requirements** | Discovery call with HR; confirm problem, users, scope, boundaries, escalation and success measures | ⏳ Pending: requirements not yet received |
 | **2. Enterprise sandbox** | Move to Quick Enterprise; index HR policies from **Confluence**; run the test plan | ⏳ Waiting on sandbox access |
 | **3. Teams pilot** | Deploy via the Teams extension to an HR pilot group | Planned |
-| **4. SuccessFactors (read)** | Live personal answers: leave balances, leave requests, holidays, manager/HR contact | Planned: API scope drafted |
+| **4. SuccessFactors (read)** | Live personal answers: leave balances, leave requests, holidays, manager/HR contact | Planned: API scope verified |
 | **5. Actions & rollout** | Optional leave submission (with confirmation), smarter escalation routing, wider rollout | Future |
 | **Optional** | SharePoint embedding | Paused |
 
@@ -133,7 +133,7 @@
 - Agent guardrails defined; 15-case test plan written.
 - Teams and SharePoint deployment designs documented (configuration, permissions, approvals).
 - Non-technical Teams flow diagram prepared.
-- SuccessFactors API scope drafted (needed APIs, permissions, excluded sensitive data).
+- SuccessFactors API scope verified against the SAP API reference guide (needed APIs, user-mode permissions, authentication, excluded sensitive data).
 - Requirement-discovery questions prepared for HR.
 
 **Waiting on**
@@ -199,3 +199,4 @@
 | Date | Change |
 |---|---|
 | 2026-10-06 | First version. Problem statement is a working assumption pending HR requirements. |
+| 2026-10-06 | SuccessFactors API scope verified against the SAP API reference guide (2H 2026). Key finding: use User Mode (self-only) permissions, not Admin Mode. |
