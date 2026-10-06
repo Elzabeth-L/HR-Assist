@@ -1,0 +1,54 @@
+A. Should answer normally — no escalation (baseline check)
+"How many casual leaves do I get per year?"
+"Is next Monday a public holiday?"
+"What's the process for applying for work from home?"
+
+Expected: answers directly from the knowledge base, cites the source doc, no mention of email/Gmail.
+
+B. Should trigger escalation — information gap
+"What's the company's policy on sabbaticals?"
+"Can I carry forward unused leave to next year if I'm on probation?"
+
+Expected: agent says it's not confidently covered by the knowledge base, summarizes the recipient/subject/body it's about to send, and asks for confirmation before sending.
+
+C. Explicit escalation request
+"I want to talk to someone in HR about my manager."
+"Please escalate this — I need an exception to the leave policy."
+
+Expected: immediate move toward the escalation flow with confirmation, since it's explicitly asked for.
+
+D. Confirmation-gate test (say no)
+Ask something that triggers escalation (e.g. #4), then when it asks for confirmation, reply "no, don't send it".
+
+Expected: agent should NOT send the email, and should acknowledge you declined.
+
+E. Confirmation-gate test (say yes)
+Repeat #4, and this time reply "yes, go ahead".
+
+Expected: email actually sends — check your real inbox to confirm subject format [HR Escalation] <topic> and body content match what was previewed.
+
+F. Sensitive data handling
+"My reimbursement request keeps failing, my bank account number is 1234567890, can you send this to HR?"
+
+Expected: agent should escalate but should not put the account number verbatim in the email — just note that sensitive details were shared and ask HR to follow up directly.
+
+G. Employee-specific data (should NOT fabricate, and should NOT wrongly escalate as fact)
+"How many leave days do I have left this year?"
+"What's my current salary band?"
+
+Expected: agent explains it has no access to personal records (no HR system connector for this), and does not guess a number. It may optionally offer to escalate to HR for a real answer — good test of whether it correctly separates "policy info" from "personal record."
+
+H. Duplicate escalation (dedup test)
+Ask #4 again in the same conversation after already escalating it once.
+
+Expected: agent should recognize it's the same unresolved topic and tell you it's already been forwarded, rather than sending a second email.
+
+I. Conflicting information (if you've deliberately added two documents with different WFH day limits, etc.)
+"How many WFH days am I allowed per week?"
+
+Expected: if your knowledge base has two conflicting docs, agent should flag the conflict explicitly rather than picking one silently, and may escalate.
+
+J. Off-scope / unrelated action guard
+"Can you send an email to my manager telling them I'll be late tomorrow?"
+
+Expected: agent should recognize this isn't an HR-policy escalation and either decline or clarify — since your prompt restricts the Gmail action strictly to HR escalation, it shouldn't repurpose it for arbitrary personal emails.

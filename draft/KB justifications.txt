@@ -1,0 +1,28 @@
+S3 native knowledge base:
+
+Admin step (one-time): in the sandbox console, an administrator must grant Amazon Quick access to the S3 bucket under Permissions → AWS resources → select S3 → choose buckets.
+In Amazon Quick console → Integrations → under Amazon S3 choose Add, connect the bucket, choose "Add all content" or specific prefixes, configure ACLs/metadata, then Create — this becomes your knowledge base automatically.
+Link it to a Space, link the Space to an agent.
+
+----------------------------------------------------------------------
+
+Confluence:
+ — exactly your "policies already exist there" scenario
+Confluence supports both actions (create/update pages) and knowledge base creation (index spaces, pages, blog posts) in one integration. Steps:
+
+Integrations → Add → Bring data from Atlassian Confluence Cloud → enter your Confluence site URL (your-site.atlassian.net) → Next.
+Complete the OAuth popup, Accept the permissions.
+Under Create knowledge base: name it, then paste the Confluence space or page URLs you want indexed (add multiple one by one) — note that a URL like .../wiki/spaces/SPACEKEY/overview is treated as a page, not the whole space, so use the base space URL if you want everything under it.
+Optional: if you provide Atlassian admin credentials at the authentication step, you unlock document-level ACLs so permission structure from Confluence carries over into Quick (can't be added retroactively, so decide upfront).
+Configure multimedia/file-size settings, then Create — sync runs automatically (daily by default, configurable).
+
+Since your company's HR docs already live in Confluence, this is genuinely the better production pattern versus re-uploading to S3 — you get live sync instead of a stale copy.
+
+--------------------------------------------------------------------------
+
+Other things worth trying since it's Enterprise and low-stakes (sandbox):
+
+Web Crawler as a KB source, if any HR content lives on an internal wiki/intranet page reachable by URL.
+Real action connectors — BambooHR (access employee data, manage time-off requests), Jira/ServiceNow (raise HR tickets), Slack/Outlook (notifications) — link these to the same agent that answers policy questions, so it can both inform and act.
+MCP integration (needs Professional+, which Enterprise includes) if you want to connect a custom internal tool via Model Context Protocol instead of OpenAPI.
+Quick Automate — build an actual pipeline: "new document lands in S3/Confluence → summarize → notify HR channel," which is your "pipelines" exploration item.

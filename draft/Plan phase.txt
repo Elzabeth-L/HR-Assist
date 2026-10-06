@@ -1,0 +1,23 @@
+- deployed with kb as google drive
+
+alternatives/ options:
+- do they have an HR MS portal?/ organization level portal with employee access?
+  embedding this quick chatbot 
+  > trusted identity federation
+
+- slack - install quick app
+
+questions:
+- sandbox access
+- requirements
+- confluence as kb ( linking kb as the corr pages alone)
+
+success factor sap
+
+chatbot agent options:
+- quick
+- copilot studio
+
+deployment options:
+- teams integration
+- sharepoint embedding

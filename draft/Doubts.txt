@@ -1,0 +1,14 @@
+- aws quick
+- expectations clear
+- team we'll be working with.
+- whom to connect with for requirements
+- someone to reach out to for queries
+- goal for the next connect 
+
+
+how do we build it?
+how to deploy it?
+how to keep knowledge base up to date
+diff types of data sources we can bring in
+how to access the chatbot from other apps without having to access quick?-- authentication.
+behind the scenes, how pipeline wokr? how is not hallucinating?

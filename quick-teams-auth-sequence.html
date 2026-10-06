@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Buddy on Amazon Quick — Teams Authentication Flow</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<style>
+  :root{
+    --ink:#1b2430;
+    --ink-soft:#4a5568;
+    --paper:#f7f8fa;
+    --panel:#ffffff;
+    --rule:#dfe3e8;
+    --okta-blue:#0057d8;
+    --aws-amber:#b8720a;
+    --quick-teal:#0f7a6e;
+    --teams-violet:#5a3b9e;
+    --accent:#0f7a6e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: "Iowan Old Style","Palatino Linotype", Georgia, serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  header{
+    padding:56px 8vw 32px;
+    border-bottom:1px solid var(--rule);
+    background:var(--panel);
+  }
+  header h1{
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size:2.1rem;
+    line-height:1.25;
+    margin:0 0 10px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    color:var(--ink-soft);
+    max-width:60ch;
+    line-height:1.55;
+    margin:0;
+    font-size:1rem;
+  }
+  .meta{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-top:18px;
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .meta span{ display:flex; align-items:center; gap:7px; }
+  .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+  main{ max-width:1180px; margin:0 auto; padding:44px 8vw 80px; }
+
+  section.block{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:10px;
+    padding:34px 34px 30px;
+    margin-bottom:40px;
+  }
+  section.block h2{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:1.02rem;
+    font-weight:700;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  section.block .subtitle{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    margin:0 0 22px;
+    line-height:1.5;
+    max-width:75ch;
+  }
+  .diagram-wrap{
+    overflow-x:auto;
+    padding:10px 4px 4px;
+  }
+  .diagram-wrap svg{ max-width:none !important; }
+
+  .callout{
+    margin-top:22px;
+    padding:16px 18px;
+    border-left:3px solid var(--accent);
+    background:#f1f7f6;
+    border-radius:0 6px 6px 0;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.88rem;
+    color:#274b45;
+    line-height:1.55;
+  }
+  .callout strong{ color:#153e37; }
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    margin-top:26px;
+    padding-top:20px;
+    border-top:1px dashed var(--rule);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .legend span{ display:flex; align-items:center; gap:8px; }
+
+  .stage-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
+    gap:16px;
+    margin-top:8px;
+  }
+  .stage-card{
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:16px 18px;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .stage-card .n{
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.03em;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .stage-card h3{ font-size:0.92rem; margin:0 0 6px; color:var(--ink); }
+  .stage-card p{ font-size:0.82rem; color:var(--ink-soft); margin:0; line-height:1.5; }
+
+  footer{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 8vw 60px;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Authenticating an HR Buddy conversation in Microsoft Teams</h1>
+  <p>Two views of the same rollout: the one-time trust configuration between Okta, AWS, and Amazon Quick, and the live request path every time an employee messages the agent inside Teams.</p>
+  <div class="meta">
+    <span><span class="dot" style="background:var(--okta-blue)"></span>Okta</span>
+    <span><span class="dot" style="background:var(--aws-amber)"></span>AWS (IAM Identity Center / Secrets Manager / IAM)</span>
+    <span><span class="dot" style="background:var(--quick-teal)"></span>Amazon Quick</span>
+    <span><span class="dot" style="background:var(--teams-violet)"></span>Microsoft Teams</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2>Stage 1 — One-time trust setup</h2>
+    <p class="subtitle">Performed once by three different admins before any employee can use the Teams extension. Nothing here runs per-conversation — it establishes the trust chain that Stage 2 relies on for every message afterward.</p>
+
+    <div class="diagram-wrap">
+      <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant OA as Okta Admin
+    participant OK as Okta
+    participant AA as AWS Admin
+    participant IC as AWS IAM Identity Center
+    participant SM as Secrets Manager
+    participant IR as IAM Role
+    participant QA as Quick Admin (Author)
+    participant Q as Amazon Quick
+    participant MA as M365 Global Admin
+    participant T as Microsoft Teams
+
+    rect rgb(235, 242, 250)
+    Note over OA,OK: Okta App Integration
+    OA->>OK: Create OIDC App Integration (Web Application)
+    OA->>OK: Enable grant types — Authorization Code + Refresh Token, Implicit (hybrid)
+    OA->>OK: Add callback URI per AWS region
+    OA->>OK: Assign controlled access + enable Federation Broker Mode
+    OK-->>OA: Issues Client ID and Client Secret
+    end
+
+    rect rgb(252, 244, 230)
+    Note over AA,IC: Establish trust in AWS
+    AA->>IC: Create Trusted Token Issuer (Issuer URL = Okta OIDC endpoint)
+    AA->>IC: Map Identity Provider attribute + IAM Identity Center attribute = Email
+    IC-->>AA: Returns Trusted Token Issuer ARN
+    AA->>SM: Store Okta client_id + client_secret as a secret
+    SM-->>AA: Returns Secret ARN
+    AA->>IR: Create IAM role — trust policy scoped to Quick's regional service principal
+    AA->>IR: Attach inline policy — secretsmanager:GetSecretValue, sso:DescribeTrustedTokenIssuer
+    IR-->>AA: Returns Role ARN
+    end
+
+    rect rgb(232, 245, 242)
+    Note over QA,Q: Configure Quick
+    QA->>Q: New extension access → enter Trusted Token Issuer ARN + Aud claim (Okta Client ID)
+    QA->>Q: Select Microsoft Teams → enter M365 Tenant ID, Secrets Role ARN, Secrets ARN
+    QA->>Q: Deploy extension → bind to HR Buddy agent
+    end
+
+    rect rgb(241, 236, 249)
+    Note over MA,T: Microsoft 365 approval
+    MA->>T: Open install link, review permissions
+    MA->>T: Grant admin consent for Amazon Quick app
+    MA->>T: Optional — scope availability to a pilot user group
+    end
+
+    Note over OA,T: Trust chain now exists — repeat for future extensions is not required
+      </pre>
+    </div>
+
+    <div class="callout">
+      <strong>Why this matters:</strong> every arrow in this stage happens exactly once per organization. If any single link breaks — a missing grant type in Okta, a mistyped issuer URL, a role trust policy scoped to the wrong region — Stage 2 fails silently for every employee, not just one. This is the sequence worth walking a security reviewer through before go-live.
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--okta-blue)"></span>Identity source of truth</span>
+      <span><span class="dot" style="background:var(--aws-amber)"></span>Trust + credential plumbing</span>
+      <span><span class="dot" style="background:var(--quick-teal)"></span>Agent platform configuration</span>
+      <span><span class="dot" style="background:var(--teams-violet)"></span>Tenant-level approval</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Stage 2 — Runtime flow: an employee sends a message</h2>
+    <p class="subtitle">This is what happens, end to end, every single time an employee messages HR Buddy in Teams — whether or not they've ever used Quick before.</p>
+
+    <div class="diagram-wrap">
+      <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant E as Employee
+    participant T as Microsoft Teams
+    participant QX as Quick Teams Extension
+    participant IR as IAM Role
+    participant SM as Secrets Manager
+    participant IC as AWS IAM Identity Center
+    participant OK as Okta
+    participant QR as Quick Agent Runtime<br/>(Quick Index + HR Buddy)
+
+    E->>T: Opens Teams (already signed in — Okta session federated into Entra ID)
+    E->>T: Sends message to "Amazon Quick" (direct message)
+    T->>QX: Forwards message + employee's Entra ID token
+
+    QX->>IR: AssumeRole (STS)
+    IR-->>QX: Temporary, narrowly-scoped credentials
+
+    QX->>SM: GetSecretValue (Okta client_id / client_secret)
+    SM-->>QX: Returns stored Okta credentials
+
+    QX->>IC: Present employee token for exchange<br/>(references configured Trusted Token Issuer, checks Aud claim)
+    IC->>OK: Validate token signature against Okta's trusted issuer keys
+    OK-->>IC: Signature valid — issuer confirmed
+    IC-->>QX: Identity resolved (matched by Email attribute)
+
+    QX->>QR: Does a Quick user exist for this email?
+    alt No existing Quick user
+        QR->>QR: Just-in-time provisioning — RegisterUser<br/>(created at the account's configured subscription tier)
+    else User already exists
+        QR->>QR: Load existing user record
+    end
+
+    QX->>QR: Route request to the linked agent (HR Buddy)
+    QR->>QR: Retrieve from linked knowledge base (Quick Index semantic search)
+    QR->>QR: Generate grounded, cited response
+    QR-->>QX: Returns response
+    QX-->>T: Delivers response
+    T-->>E: Displays answer in the chat
+      </pre>
+    </div>
+
+    <div class="callout">
+      <strong>Two things worth calling out to stakeholders:</strong> first, the employee never sees a separate login — every credential exchange above happens silently between Stage 1's already-established trust chain. Second, the <em>"just-in-time provisioning"</em> branch only fires the very first time a given employee ever messages the bot — from then on, every future message skips straight to the existing-user path, but the identity verification (steps 4–11) still runs in full on every single message, not just the first.
+    </div>
+
+    <div class="stage-grid">
+      <div class="stage-card">
+        <div class="n">STEPS 1–3</div>
+        <h3>Employee-side trigger</h3>
+        <p>No separate Quick login — the employee's existing Teams/Entra session is what gets forwarded.</p>
+      </div>
+      <div class="stage-card">
+        <div class="n">STEPS 4–7</div>
+        <h3>Credential retrieval</h3>
+        <p>Quick's backend assumes its scoped IAM role and pulls the Okta app secret needed to complete the identity exchange.</p>
+      </div>
+      <div class="stage-card">
+        <div class="n">STEPS 8–11</div>
+        <h3>Identity verification</h3>
+        <p>IAM Identity Center calls back to Okta to confirm the token's signature against the trusted issuer, then resolves it to a specific person by email.</p>
+      </div>
+      <div class="stage-card">
+        <div class="n">STEPS 12–17</div>
+        <h3>Provisioning &amp; response</h3>
+        <p>A Quick user is created automatically if needed, then the request is routed to HR Buddy for retrieval and generation.</p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot" style="background:var(--teams-violet)"></span>Employee-facing surface</span>
+      <span><span class="dot" style="background:var(--aws-amber)"></span>Credential + trust exchange</span>
+      <span><span class="dot" style="background:var(--okta-blue)"></span>Signature verification</span>
+      <span><span class="dot" style="background:var(--quick-teal)"></span>Agent execution</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Reflects the rollout plan discussed for HR Buddy on Amazon Quick, published as a Microsoft Teams extension with Okta-federated identity via AWS IAM Identity Center.
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#eef2f6',
+      primaryTextColor: '#1b2430',
+      primaryBorderColor: '#c7ccd3',
+      lineColor: '#8a93a0',
+      secondaryColor: '#f1f7f6',
+      tertiaryColor: '#fdf6ea',
+      actorBkg: '#ffffff',
+      actorBorder: '#c7ccd3',
+      actorTextColor: '#1b2430',
+      actorLineColor: '#c7ccd3',
+      signalColor: '#4a5568',
+      signalTextColor: '#1b2430',
+      labelBoxBkgColor: '#ffffff',
+      labelBoxBorderColor: '#c7ccd3',
+      labelTextColor: '#1b2430',
+      loopTextColor: '#1b2430',
+      noteBkgColor: '#fdf6ea',
+      noteTextColor: '#4a3a10',
+      noteBorderColor: '#e6d4a3',
+      fontFamily: '-apple-system, Segoe UI, Helvetica, Arial, sans-serif',
+      fontSize: '14px'
+    },
+    sequence: {
+      diagramMarginX: 20,
+      diagramMarginY: 12,
+      actorMargin: 60,
+      boxMargin: 12,
+      mirrorActors: false,
+      wrap: true,
+      width: 150,
+      height: 42,
+      messageMargin: 40
+    }
+  });
+</script>
+
+</body>
+</html>
