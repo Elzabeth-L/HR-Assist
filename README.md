@@ -53,5 +53,5 @@ Employee (Teams) → HR Assist (Amazon Quick) ─┬─► HR policies (Confluen
 | [docs/03-knowledge-base](docs/03-knowledge-base/) | [Data sources: Confluence & SuccessFactors](docs/03-knowledge-base/kb-source-options.md) |
 | [docs/04-deployment](docs/04-deployment/) | [Teams guide](docs/04-deployment/teams.md) · [Teams flow diagram](docs/04-deployment/teams-architecture.html) · [SharePoint guide](docs/04-deployment/sharepoint.md) |
 | [docs/05-testing](docs/05-testing/) | [Test plan](docs/05-testing/test-plan.md) |
-| [docs/06-integrations](docs/06-integrations/) | [SuccessFactors API scope](docs/06-integrations/successfactors-api-scope.md) |
+| [docs/06-integrations](docs/06-integrations/) | [SuccessFactors API scope](docs/06-integrations/successfactors-api-scope.md) · [SuccessFactors access & roles](docs/06-integrations/successfactors-access-roles.md) |
 | [draft](draft/) | Original raw notes |

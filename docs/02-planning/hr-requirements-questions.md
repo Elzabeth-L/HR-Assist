@@ -52,13 +52,16 @@
 1. Should it answer only general policy questions, or also personal ones like "how many leave days do I have left?" or "when did I join?"
 2. If personal data is involved, who in HR can see that information today, and should the same rules apply here?
 3. Is there any personal data (e.g. salary, medical leave details) you'd want kept out of this entirely, even if it's technically possible?
+4. Is there a **test version of SuccessFactors** (often called a "preview" or "sandbox" instance, separate from the live system) that we could use to build and try out the assistant safely before it connects to real employee records? If so, who can arrange access for us?
 
 ## 7. Actions, Not Just Answers
 *Should it only give information, or also do things?*
 
-1. Besides answering questions, should employees be able to do things through it, such as submit a leave request, claim a reimbursement or raise an HR ticket?
-2. When something creates a real request, who should be notified, and how (email, a ticketing system, something else)?
-3. Should any of these requests need a manager's or HR's approval before they're final?
+1. Should the assistant **only answer questions** (e.g. "how many leave days do I have left?"), or should employees also be able to **carry out actions** through it, such as applying for leave?
+2. If actions are wanted, which ones matter most: applying for leave, cancelling or withdrawing a leave request, checking the status of a request, claiming a reimbursement, raising an HR ticket, something else?
+3. Which actions should be available **at launch**, and which can come **later**?
+4. When something creates a real request, who should be notified, and how (email, a ticketing system, something else)?
+5. Should any of these requests need a manager's or HR's approval before they're final?
 
 ## 8. Escalation to a Real Person
 *The human safety net.*
