@@ -1,7 +1,7 @@
 # HR Assist — SharePoint Embedding Deployment Guide
 
 > **Deployment pattern:** Embed the Amazon Quick HR Assist chat agent in a **SharePoint Online** page. Users sign in once to SharePoint and never see a separate Quick login.
-> **Status:** **Paused.** Researched but not yet pursued.
+> **Status:** **Preferred option (pending HR confirmation).** After HR call #1, HR assumes the assistant will live on the SharePoint HR hub.
 
 This guide covers the architecture, prerequisites, configuration, permissions, approvals, security and validation for embedding HR Assist in SharePoint.
 

@@ -1,5 +1,6 @@
 # HR Assist — Planning Phase
 
+> **Last updated:** 2026-10-14 (after HR requirements call #1)
 
 This document records the current state of the HR Assist build, the options under consideration, and the questions that must be settled before moving on.
 
@@ -9,61 +10,73 @@ This document records the current state of the HR Assist build, the options unde
 
 | Item | Status |
 |---|---|
-| Chat agent (HR Assist) | Built on a personal Free-tier Amazon Quick account |
-| Knowledge base | **Google Drive** (connected through OAuth) |
-| Actions | Gmail (employee-facing escalation) and Slack `#hr-escalations` (internal alert) |
+| Prototype agent | Built on a personal Free-tier Amazon Quick account (pre-requirements) |
+| Prototype knowledge base | Google Drive (sample policies) |
+| Prototype actions | Gmail escalation + Slack alert. **To be revisited:** EBSCO has no ticketing system and HR questions currently go through Teams and email. |
+| Requirements | Call #1 held: **knowledge discovery, not personalised, no policy interpretation** |
+| Next input | HR's final question list (Excel) and policy documents |
 
 ---
 
-## 2. Access Channels (How Employees Reach the Bot)
+## 2. Phase 1 Scope
+
+- **In scope:** finding HR policies and processes; quoting the relevant text with a source link; "I don't know" fallback; English (US); EBSCO branding.
+- **Out of scope:** personalised answers (leave balances etc.), policy interpretation, actions on the employee's behalf.
+- **Content:** SharePoint HR content + new HR-written "tribal knowledge" documents.
+
+---
+
+## 3. Access Channels (How Employees Reach the Assistant)
 
 | Option | Description | Mechanism | Status |
 |---|---|---|---|
-| **Organisation / HR portal embed** | Embed the Quick chatbot in an existing employee portal (the org uses SharePoint) | Trusted identity federation → `GenerateEmbedUrlForRegisteredUser` → iframe; optional JIT user provisioning | Researched, **paused** |
-| **Microsoft Teams** | Quick chat inside Teams through the Microsoft Teams extension | Okta OIDC app → IAM Identity Center trusted token issuer → Secrets Manager + IAM role → Quick extension access → M365 admin consent | **Current priority** |
-| **Slack** | Install the Quick app in Slack | Quick's Slack app / extension | Idea only, not yet explored |
+| **SharePoint HR hub** | Assistant embedded on the HR homepage | SPFx web part + embed backend → registered-user embed URL → iframe | **HR leaning towards this.** Design documented. |
+| **Microsoft Teams** | Quick chat inside Teams through the Teams extension | Okta OIDC → IAM Identity Center trusted token issuer → Secrets Manager + IAM role → extension access → M365 admin consent | Option. Design documented. |
 
-**Open question:** does the organisation have an HR or company portal that all employees can reach? The answer decides whether portal embedding is worth pursuing.
+⏳ **Decision owner:** HR. One channel or both.
 
 ---
 
-## 3. Chatbot Platform Options
+## 4. Chatbot Platform
 
 | Platform | Notes |
 |---|---|
-| **Amazon Quick** | Current build platform. Native KB (Quick Index), Spaces, custom agents and action connectors. |
-| **Microsoft Copilot Studio** | Alternative to evaluate. It fits naturally with Teams/SharePoint/M365. Not explored yet. |
+| **Amazon Quick** | Build platform. EBSCO is also evaluating Quick more widely (e.g. BI). |
+| Microsoft Copilot Studio | Previously noted as an alternative. Not pursued. |
 
 ---
 
-## 4. Knowledge Base Direction
+## 5. Knowledge Base Direction
 
-- **Now:** Google Drive (Free tier).
-- **Target:** **Confluence**, indexing only the relevant HR pages/spaces rather than the whole site.
-  - Scope it by pasting specific space or page URLs when you create the KB, or build several narrow KBs from the same source.
-
----
-
-## 5. Potential System Integration
-
-- **SAP SuccessFactors**: a possible HR system of record for employee-specific data (leave balances, employee records). This would let the agent answer questions that the system prompt currently tells it not to guess. The integration route (native connector, OpenAPI custom connector or MCP) has not been decided.
+- **Prototype:** Google Drive (Free tier).
+- **Phase 1:** **SharePoint**, indexing only HR-approved sites and libraries, plus a dedicated library for HR-written knowledge documents.
+- **Approach:** categorise HR's questions into *covered by SharePoint* / *needs new documentation* / *unclear*.
 
 ---
 
-## 6. Questions to Resolve
+## 6. Future Integrations (Deferred)
+
+- **SAP SuccessFactors:** personalised answers and actions (Analyze / Act stages). Research complete (API scope, roles, OpenAPI vs MCP). Deferred until HR approves personalisation.
+- **Outlook:** a draft-reply-for-review capability exists via the Outlook connector. Auto-reply isn't recommended.
+
+---
+
+## 7. Questions to Resolve
 
 | # | Question | Owner | Status |
 |---|---|---|---|
-| 6.1 | Sandbox access (Enterprise account) | Project lead / AWS admin | Open |
-| 6.2 | Formal requirements | Stakeholders | Open |
-| 6.3 | Confluence as KB: approve indexing only the relevant HR pages | HR / Confluence owners | Open |
-| 6.4 | Is there an org-wide employee portal for embedding? | IT / HR | Open |
-| 6.5 | Is SAP SuccessFactors in use, and can it be integrated? | HR systems team | Open |
-| 6.6 | Platform choice: Amazon Quick vs Copilot Studio | Project lead | Open |
+| 7.1 | Final question list and policy documents | HR working group | ⏳ Pending |
+| 7.2 | Channel: SharePoint HR hub, Teams or both | HR | Open |
+| 7.3 | Where quoting a policy ends and interpreting it begins | HR | Open |
+| 7.4 | Fallback when unanswered (no ticketing system) | HR + UST | Open |
+| 7.5 | Content owners per domain; who updates content when policies change | HR | Open |
+| 7.6 | First thin-slice domain(s) | HR + UST | After 7.1 |
+| 7.7 | Assistant name and branding | HR | Open |
+| 7.8 | Enterprise sandbox access | Engagement lead / AWS admin | ✅ Granted |
 
 ---
 
-## 7. Deployment Options (Summary)
+## 8. Deployment Options (Summary)
 
-1. **Microsoft Teams integration**: in progress.
-2. **SharePoint embedding**: paused until the Teams approach is validated.
+1. **SharePoint HR hub embedding:** preferred by HR (pending confirmation).
+2. **Microsoft Teams extension:** alternative or additional channel.

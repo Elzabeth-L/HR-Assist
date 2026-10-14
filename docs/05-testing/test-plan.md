@@ -1,5 +1,7 @@
 # HR Assist — Test Plan: Sample Questions & Expected Behaviour
 
+> **Note (2026-10-14):** These cases were written for the prototype. After HR call #1, Phase 1 is **not personalised** and **doesn't interpret policy**. Tests G (no personal data) and J (no unrelated actions) still apply. Escalation tests (B–E, H) will change once the fallback design is agreed, and HR's approved question-and-answer set will become the main test set.
+
 
 This test plan checks that the HR Assist agent answers policy questions accurately, escalates correctly through Gmail and Slack, respects the confirmation gate, and does not make up information.
 

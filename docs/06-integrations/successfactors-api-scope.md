@@ -2,7 +2,7 @@
 
 > **Purpose:** Define the **minimum** set of SAP SuccessFactors APIs the HR Assist agent needs, with the permissions, authentication and safeguards for each, so the connector schema stays small, access stays narrow and sensitive data stays out.
 > **Source:** *SAP SuccessFactors API Reference Guide*, Document Version 2H 2026 (2026-10-02). Page numbers are given as **(p. N)**.
-> **Status:** Verified against the API reference guide. **Scope is provisional until HR requirements are received.** Entity availability still depends on the modules and Provisioning settings enabled in the EBSCO tenant (p. 622).
+> **Status:** ⏸ **Deferred.** HR confirmed v1 is **not personalised** (requirements call #1), so this is kept as research for a future phase. Verified against the API reference guide. Entity availability still depends on the modules and Provisioning settings enabled in the EBSCO tenant (p. 622).
 
 ---
 
@@ -17,6 +17,7 @@
 - [7. Authentication](#7-authentication)
 - [8. Permissions (Role-Based Permissions)](#8-permissions-role-based-permissions)
 - [9. Connector Design](#9-connector-design)
+  - [9.1 Connector Type: OpenAPI vs MCP](#91-connector-type-openapi-vs-mcp)
 - [10. Limits, Logging \& Operations](#10-limits-logging--operations)
 - [11. Approvals](#11-approvals)
 - [12. Open Questions for EBSCO](#12-open-questions-for-ebsco)
@@ -162,7 +163,7 @@ Every API carries a **sensitivity flag**:
 
 | API | Method | What it does | Used for | Flag | Ref |
 |---|---|---|---|---|---|
-| `approveWfRequest` | POST | Approves a workflow step the user is authorised to approve | "Approve Priya's leave request" | 🟠 | p. 1661 |
+| `approveWfRequest` | POST | Approves a workflow step the user is authorised to approve | "Approve my team member's leave request" | 🟠 | p. 1661 |
 | `sendbackWfRequest`, `commentWfRequest` | POST | Sends back or comments on a workflow request | Manager follow-ups | 🟡 | p. 1662–1664 |
 | `rejectWfRequest` | POST | Rejects a workflow request. **Needs** the admin permission *Manage Workflow Requests*. | Not recommended; reject in SuccessFactors directly | 🟠 | p. 1663 |
 
@@ -332,6 +333,22 @@ SAP SuccessFactors OData v2
 | `getMyManagerAndHRContact` | Read | `User` → `manager`, `hr`; `EmpJobRelationships` | No |
 | `submitLeaveRequest` *(Phase 2)* | **Write** | `EmployeeTime` insert with `workflowConfirmed=true` | **Always** (*Always Ask*) |
 | `getMyPendingWorkflows` *(Phase 2)* | Read | `MyPendingWorkflow`, `TodoEntryV2` | No |
+
+### 9.1 Connector Type: OpenAPI vs MCP
+
+Quick supports two ways to plug in the SuccessFactors proxy:
+
+| | **OpenAPI custom connector** (recommended) | **Remote MCP server** |
+|---|---|---|
+| Effort | Lower: import an OpenAPI 3.0 schema of the operations above | Higher: wrap the same operations as MCP tools and host an MCP server |
+| Works in the browser / web console | ✅ Yes | ✅ Yes |
+| Needs Quick Desktop | ❌ No | ❌ No. Only **local** MCP servers (which spawn a local process such as `python` / `npx`) need Desktop. |
+| Reusable by other MCP-compatible AI clients | ❌ No | ✅ Yes |
+
+- The proxy (API Gateway + Lambda) is cloud-hosted, so an MCP version would be a **remote** MCP server. **No Quick Desktop requirement**, contrary to an earlier internal assumption.
+- **Use OpenAPI** while Quick is the only consumer. Consider MCP only if other AI clients need the same SuccessFactors tools.
+- ⚠ One AWS workshop guide implies an "install in Quick Desktop" step for a specific MCP connector, which contradicts the general statement that remote connectors work everywhere. **Test in the sandbox** before finalising.
+- ⚠ When this work resumes, confirm with AWS whether the employee-identifier check can use **Quick's verified session context** (the signed-in user's identity passed to the connector).
 
 ---
 

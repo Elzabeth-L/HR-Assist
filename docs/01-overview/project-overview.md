@@ -1,30 +1,31 @@
 # HR Assist — Project Overview
 
 > **What this is:** a plain-language explanation of the HR Assist project: the problem, the solution, how it works, where we are and what's next. Technical detail is included only where it helps understanding.
-> **Last updated:** 2026-10-06
-> **Status:** Prototype complete · Formal HR requirements pending
+> **Last updated:** 2026-10-14
+> **Status:** Requirements call #1 held · Phase 1 scope agreed · Enterprise sandbox available · Waiting on HR's question list
 
 ---
 
 ## 1. In One Paragraph
 
-**HR Assist** is an AI-powered HR chatbot for EBSCO employees, built by UST on **Amazon Quick** (AWS's AI assistant platform). Employees ask HR questions in everyday language, inside tools they already use (**Microsoft Teams** first), and get instant answers drawn from the company's **official HR policies**. Where the answer depends on the employee's own record (e.g. a leave balance), the assistant will look it up in **SAP SuccessFactors**. When it can't answer confidently, it **hands the question to the HR team** instead of guessing.
+**HR Assist** (final EBSCO name to be chosen by HR) is an AI-powered **HR knowledge assistant** for EBSCO employees, built by UST. Employees ask HR questions in everyday language and get the answer straight away: the relevant text from HR's own content, plus a link to the source. Phase 1 is about **discovery**: helping people find information that already exists but is hard to locate. It is **not personalised** and doesn't interpret policy. Later phases may add personalised answers and actions, once HR approves. The prototype and current design use **Amazon Quick** (AWS); the final platform choice is subject to confirmation.
 
 ---
 
 ## 2. The Problem We're Solving
 
-> HR's formal requirements haven't been received yet. The problem statement below is our **working understanding** and will be refined once HR confirms it.
+*Confirmed on HR requirements call #1.*
 
 | Today's challenge | Impact |
 |---|---|
-| HR receives a high volume of **repetitive questions** (leave rules, holidays, WFH, benefits) | HR time goes into answering the same questions instead of higher-value work |
-| HR policies are **spread across documents and pages** and hard to search | Employees can't find answers themselves, or find outdated versions |
-| Answers depend on **location, employee type or tenure** | Generic answers are often wrong for the individual |
-| Personal questions ("how many leave days do I have left?") need someone to **look up the HR system** | Delays for employees and more manual work for HR |
-| No consistent way to **escalate** a question that needs human judgment | Questions get lost or answered inconsistently |
+| Employees ask HR the **same questions** repeatedly (vacation policy, volunteer time off, interns, company cars, parental leave, scholarships) | HR time goes on routine questions |
+| Answers mostly **exist on SharePoint** but take **too many clicks** to find | Employees don't search, or don't find the answer |
+| Some answers are **undocumented "tribal knowledge"** | Only certain HR people can answer them |
+| Questions arrive **ad hoc via Teams, email or phone**, often to any HR person the employee knows | Inconsistent answers; questions get forwarded around |
+| **HR business partners** (one per department) receive many small questions | Distracts them from consulting on bigger issues |
+| **No ticketing system** | No tracking of HR questions |
 
-**In short:** employees need fast, accurate, personalised HR answers, and HR needs to spend less time on routine questions without losing control over sensitive or judgment-based cases.
+**In short:** employees need one easy place to find HR information, and HR needs to stop answering the same questions one by one.
 
 ---
 
@@ -32,30 +33,32 @@
 
 | Group | Role in the project |
 |---|---|
-| **EBSCO employees** | **Users.** They ask questions and get answers. |
-| **EBSCO HR team** | **Product owner.** Defines scope, owns policy content, receives escalations, approves behaviour. |
-| **EBSCO IT / admins** | Provide access and approvals: Okta, AWS, Microsoft 365, SuccessFactors, Confluence. |
-| **UST team** | Designs, builds, tests and deploys the solution. |
+| **EBSCO employees** | **Users.** They ask questions and find answers. |
+| **EBSCO HR team** (HR leads and the HR working group) | **Product owner.** Defines scope, provides the question list and content, decides the channel and branding, owns content accuracy. |
+| **HR subject-matter experts** | Own and test the content for their domains |
+| **Engagement lead** | Overall engagement and coordination between EBSCO, UST and AWS |
+| **AWS and solution architecture advisors** | Platform guidance and solution patterns |
+| **UST team** | Designs, builds, tests and deploys the solution |
 
 ---
 
 ## 4. What We're Building
 
-### 4.1 What HR Assist does
+### 4.1 Phase 1: what the assistant does
 
-| Capability | Example | Data source | Status |
-|---|---|---|---|
-| **Answers policy questions** with a reference to the source | "How many casual leaves do I get per year?" | HR policy documents (**Confluence**) | Prototype built (on Google Drive) |
-| **Answers personal HR questions** | "How many leave days do I have left?" / "Is my leave approved?" | **SAP SuccessFactors** (live lookup) | Planned: API scope verified |
-| **Gives location-aware answers** | "Is next Monday a holiday?" for the employee's own location | SuccessFactors job data + holiday calendar | Planned |
-| **Escalates to HR** | Questions it can't answer, exceptions, conflicting policies, explicit requests | Email to HR (Gmail) + internal HR alert (Slack) | Prototype built |
-| **Takes simple actions** (later) | Submit a leave request, after the employee confirms | SuccessFactors | Future phase, if HR wants it |
+| Capability | Example | Source |
+|---|---|---|
+| **Finds the right policy or process** | "Where can I find the vacation policy?" / "How do I use volunteer time off?" | HR policies on **SharePoint** |
+| **Answers "how do I" questions** that were never written down | "How do I get a company car when visiting the office?" | New HR-written knowledge documents |
+| **Quotes the relevant text and links to the source** | Shows the policy section plus the SharePoint link | Citations from the retrieved document |
+| **Says when it doesn't know** | Points to the manager or HR instead of guessing | Guardrails in the agent's instructions |
 
-### 4.2 What HR Assist will NOT do
-- **Make up** policies, entitlements or personal data. If it doesn't know, it says so and offers to escalate.
-- Make HR decisions (exceptions, approvals, grievances, legal or performance matters). These always go to a person.
-- Show one employee's data to another.
-- Access highly sensitive data such as **national ID numbers, passport details, bank details, salary or medical information**.
+### 4.2 What it will NOT do in Phase 1
+- **Personalised answers:** no leave balances or employee records.
+- **Interpret policy:** it points to and quotes the policy; employees discuss interpretation with their manager or HR.
+- **Make things up:** it only answers from HR's content.
+- **Act on the employee's behalf** (e.g. apply for leave). That's a possible future stage.
+- **Access sensitive data** (national IDs, passport, bank, salary, medical).
 
 ---
 
@@ -64,40 +67,33 @@
 ### 5.1 The simple version
 
 ```
- Employee asks in Teams
+ Employee asks a question (SharePoint HR hub and/or Teams)
         │
         ▼
- HR Assist (Amazon Quick) confirms who the employee is (company login, Okta)
-        │
-        ├──► Policy question  → searches the official HR policy documents → answers with a source reference
-        ├──► Personal question → looks up the employee's own record in SuccessFactors → answers
-        └──► Can't answer / needs HR → drafts an email to HR, asks the employee to confirm, sends it
-        │
-        ▼
- Answer appears in Teams
+ EBSCO HR Assistant
+        │  searches only HR's approved content
+        ├──► Found      → relevant policy text + link to the source
+        └──► Not found  → says so and points to the manager / HR (fallback design TBD)
 ```
 
-### 5.2 A bit more technical
+### 5.2 A bit more technical (current design, based on Amazon Quick)
 
-| Component | What it is | Role in HR Assist |
+| Component | What it is | Role |
 |---|---|---|
-| **Amazon Quick** | AWS's agentic AI workspace (formerly QuickSight / Quick Suite) | Hosts the HR Assist **custom chat agent**, its knowledge base and its actions |
-| **Knowledge base (Quick Index)** | Managed search index of documents | HR policies from **Confluence** are split into passages, converted into searchable vectors and indexed **ahead of time**, then kept current by scheduled, incremental sync |
-| **Retrieval-augmented generation (RAG)** | "Search first, then answer" | For each question, the most relevant policy passages are retrieved and given to the AI model, so answers are **grounded in company documents** and cite their source |
-| **Amazon Bedrock** | AWS's managed AI model service | Generates the answer. The model is managed by Quick. |
-| **System prompt (guardrails)** | The agent's standing instructions | Enforces: use HR documents as the source of truth, never invent policy or personal data, flag conflicts, escalate when unsure, confirm before sending anything |
-| **Action connectors** | Integrations that let the agent *do* things | **Gmail** (escalation email, needs employee confirmation), **Slack** (anonymised internal alert to HR), **SuccessFactors** (planned, via a custom connector) |
-| **SAP SuccessFactors connector** (planned) | A small AWS API layer (API Gateway + Lambda) in front of the SuccessFactors OData APIs | Returns **only the asking employee's** data and **only approved fields**. The employee's identity comes from their login, never from the AI. |
-| **Okta + AWS IAM Identity Center** | Company login + AWS identity service | Confirms who the employee is, so there's no separate login and the right permissions apply |
-| **Microsoft Teams extension** | Quick's official Teams app | Puts HR Assist inside Teams chat |
+| **AI assistant platform** (currently **Amazon Quick**) | Agentic AI workspace that hosts chat agents, knowledge bases and actions | Hosts the HR assistant's agent and its knowledge base |
+| **Knowledge base / search index** | Managed search index | HR content from **SharePoint** (plus HR-written documents) is split into passages, indexed **ahead of time** and kept current by scheduled, incremental sync |
+| **Retrieval-augmented generation (RAG)** | "Search first, then answer" | The most relevant passages are retrieved and given to the AI model, so answers are **grounded** in HR content and **cite** their source |
+| **Scoped to HR content only** | Platform setting / instructions | The agent doesn't use the AI's general knowledge for answers |
+| **System prompt (guardrails)** | The agent's standing instructions | Use HR content as the only source; quote, don't interpret; never invent; say "I don't know" |
+| **AI model service** (currently **Amazon Bedrock**) | Managed large language models | Generates the answer |
 
 ### 5.3 Why answers can be trusted
-1. **Grounded:** answers come from retrieved HR documents, not the AI's general knowledge.
-2. **Cited:** the source policy is referenced, so employees and HR can check it.
-3. **Honest about gaps:** missing or conflicting information is stated openly and escalated.
-4. **No guessing on personal data:** personal answers come only from SuccessFactors, for the signed-in employee.
-5. **Human in the loop:** nothing is sent on the employee's behalf without their confirmation.
-6. **Tested:** a structured test plan covers normal answers, escalation, confirmation, sensitive data, made-up information, duplicate escalations, conflicting documents and misuse of actions.
+1. **Grounded and cited:** every answer comes from HR content and links to it.
+2. **No interpretation:** it quotes the policy rather than explaining it.
+3. **Honest about gaps:** it says when it doesn't know.
+4. **Tested against an approved answer set:** HR's own questions and approved answers.
+5. **Feedback loop:** thumbs up/down from users; HR subject-matter experts test each domain.
+6. **Pilot first:** a small group before wider rollout.
 
 ---
 
@@ -105,41 +101,50 @@
 
 | Channel | Description | Status |
 |---|---|---|
-| **Microsoft Teams** | Employees chat with HR Assist directly in Teams. Sign-in is handled by the company login (Okta). | **Current priority.** Setup and approvals documented. |
-| **SharePoint (company portal)** | HR Assist embedded on an HR page in SharePoint | **Paused** until Teams is validated. Design documented. |
+| **SharePoint HR hub** | Assistant embedded on the HR homepage in SharePoint | **Option HR leans towards.** Design documented. |
+| **Microsoft Teams** | Employees chat with the assistant in Teams (company login via Okta) | **Option.** Setup and approvals documented. |
 
-**Known Teams limitation:** employees need to **message the bot directly** (not @mention it in channels) and select HR Assist once. Channel mentions use Quick's general assistant, and escalation actions only work in direct messages.
+⏳ **HR will decide** where it lives: one channel or both.
 
 ---
 
-## 7. Delivery Approach
+## 7. Roadmap & Delivery Approach
 
-| Phase | Scope | Status |
+### 7.1 Discover → Analyze → Act
+
+| Stage | Meaning | Example | Status |
+|---|---|---|---|
+| **1. Discover** | Find information accurately, with citations | "Where is the vacation policy?" | **Phase 1 (current)** |
+| **2. Analyze** | Combine policy with the employee's situation | "What's my vacation balance, and which leave applies?" | Future: needs HR approval, governance and an HR-system integration (e.g. SuccessFactors) |
+| **3. Act** | Act on the employee's behalf | "Submit that leave request for me" | Future |
+
+### 7.2 How Phase 1 is delivered
+
+| Step | Scope | Status |
 |---|---|---|
-| **0. Prototype** | HR Assist agent on a Free-tier Quick account; sample HR policies (Google Drive); Gmail + Slack escalation; guardrails; test plan | ✅ Done |
-| **1. Requirements** | Discovery call with HR; confirm problem, users, scope, boundaries, escalation and success measures | ⏳ Pending: requirements not yet received |
-| **2. Enterprise sandbox** | Move to Quick Enterprise; index HR policies from **Confluence**; run the test plan | ⏳ Waiting on sandbox access |
-| **3. Teams pilot** | Deploy via the Teams extension to an HR pilot group | Planned |
-| **4. SuccessFactors (read)** | Live personal answers: leave balances, leave requests, holidays, manager/HR contact | Planned: API scope verified |
-| **5. Actions & rollout** | Optional leave submission (with confirmation), smarter escalation routing, wider rollout | Future |
-| **Optional** | SharePoint embedding | Paused |
+| 0. Prototype | Free-tier agent, sample policies, escalation, guardrails, test plan | ✅ Done |
+| 1. Requirements | Call #1: scope agreed | ✅ Done |
+| 2. Environment | Enterprise sandbox account | ✅ Available |
+| 3. Question list | HR shares the final questions (Excel) and documents | ⏳ Pending |
+| 4. Analysis | Categorise questions: answered by SharePoint / needs new documentation / unclear | Next |
+| 5. Thin slice | Prove the assistant on about five questions in one or two domains | Planned |
+| 6. Expand by domain | HR experts test each domain while the next is built; sub-agents per domain if needed | Planned |
+| 7. Pilot → rollout | Small employee group, then all employees | Planned |
 
 ---
 
-## 8. Current Status (as of 2026-10-06)
+## 8. Current Status (as of 2026-10-14)
 
 **Done**
-- Working HR Assist prototype with grounded, cited answers and HR escalation (Gmail + Slack).
-- Agent guardrails defined; 15-case test plan written.
-- Teams and SharePoint deployment designs documented (configuration, permissions, approvals).
-- Non-technical Teams flow diagram prepared.
-- SuccessFactors API scope verified against the SAP API reference guide (needed APIs, user-mode permissions, authentication, excluded sensitive data).
-- Requirement-discovery questions prepared for HR.
+- Free-tier prototype (grounded, cited answers; escalation; test plan).
+- Requirements call #1 held: Phase 1 scope agreed.
+- **Enterprise sandbox access received.**
+- SharePoint and Teams deployment designs documented.
+- Research completed: Outlook integration, Quick Desktop scope, sub-agent architecture, and the SuccessFactors API scope (deferred).
 
 **Waiting on**
-- **HR requirements:** the requirements call was delayed.
-- **Amazon Quick Enterprise sandbox access.**
-- Access to the **Confluence HR pages**, plus contacts for the **Okta, Microsoft 365 and SuccessFactors** admins.
+- HR's **final question list** and documents (after HR's internal review).
+- HR's decision on the **channel** and **branding**.
 
 ---
 
@@ -147,13 +152,17 @@
 
 | Decision | Status |
 |---|---|
-| Build platform: **Amazon Quick** | Current choice. Microsoft Copilot Studio noted as an alternative, not evaluated. |
-| Policy knowledge source: **Confluence** (indexed) | Recommended |
-| Personal data source: **SAP SuccessFactors** (live, via custom connector) | Recommended; scope to be confirmed with HR and Security |
-| First channel: **Microsoft Teams** | Agreed priority |
-| SharePoint embedding | Paused |
+| Build platform | Prototype and current design on **Amazon Quick**; final platform **not yet confirmed** |
+| Phase 1 = **knowledge discovery**, **not personalised** | ✅ Agreed with HR |
+| **No policy interpretation**: quote the relevant text + link to the source | ✅ Agreed (where the line sits is to be confirmed) |
+| Content: **SharePoint** + new HR-written documents | ✅ Agreed |
+| **English (US) first** | ✅ Agreed |
+| **EBSCO-branded** assistant | ✅ Agreed (name TBD by HR) |
+| Channel: SharePoint HR hub vs Teams | ⏳ HR to decide |
+| Fallback when unanswered (no ticketing system) | ⏳ To design |
+| SuccessFactors / personalisation | ⏸ Deferred |
+| Sub-agents per domain | Proposed for later; after the question list |
 | Sensitive data (national IDs, passport, bank, salary, medical) | **Excluded** |
-| Agent writes (e.g. leave submission) | Deferred; always with employee confirmation |
 
 ---
 
@@ -161,21 +170,20 @@
 
 | Risk / dependency | Impact | Mitigation |
 |---|---|---|
-| HR requirements delayed | Scope can't be finalised | Prototype and designs prepared in parallel; questions ready |
-| Sandbox access pending | Can't test Confluence or Teams | Escalate the access request; Free-tier prototype in the meantime |
-| Sensitive HR data in SuccessFactors | Privacy and compliance exposure | Minimal API scope, field allowlisting, self-only access, Security sign-off |
-| Per-user Quick licensing | Cost grows with users | Pilot first; controlled rollout |
-| Teams limitations (agent choice, DM-only actions) | User confusion | Clear user guidance; pre-pinned app |
-| Outdated policy content | Wrong answers | HR owns content; scheduled sync; source citations |
+| Question list delayed | Can't scope the thin slice | Designs and prototype ready; analysis approach agreed |
+| Content gaps (undocumented knowledge) | Assistant can't answer | HR writing new documents; questions categorised by coverage |
+| No clear content owner | Answers go stale after policy changes | Define owners per domain; scheduled sync |
+| Channel undecided | Deployment work can't start | Both SharePoint and Teams designs documented |
+| Platform not confirmed | Rework if a different platform is chosen | Keep content, question sets and guardrails platform-neutral |
+| Quoting vs interpreting is unclear | Answers may overstep HR's intent | Confirm the rule with HR; enforce it in the system prompt and tests |
 
 ---
 
 ## 11. How We'll Measure Success (proposed, to confirm with HR)
-- Share of routine HR questions answered without HR involvement.
-- Fewer repetitive questions reaching the HR inbox.
-- Accuracy against the test plan, and HR spot-checks of real answers.
-- Employee satisfaction with answers.
-- Escalations reach the right HR contact, with nothing lost.
+- Accuracy against HR's approved question-and-answer set.
+- Share of questions answered with a correct source link.
+- Fewer routine questions reaching HR business partners.
+- Positive user feedback (thumbs up / down).
 
 ---
 
@@ -183,14 +191,13 @@
 
 | Term | Meaning |
 |---|---|
-| **Agent** | The HR Assist chatbot configured in Amazon Quick |
-| **Knowledge base** | The searchable collection of HR policy documents the agent answers from |
-| **Space** | A Quick container that groups knowledge for an agent |
-| **RAG** | Retrieval-augmented generation: search the documents first, then answer from them |
-| **Action / connector** | An integration that lets the agent do something (send an email, look up a record) |
-| **Escalation** | Handing a question to a human in HR |
-| **SuccessFactors** | SAP's HR system of record (employee, job and time-off data) |
-| **Okta / IAM Identity Center** | Company login and the AWS service that trusts it |
+| **Agent** | The HR assistant configured in the AI platform |
+| **Knowledge base** | The searchable collection of HR content the agent answers from |
+| **Tribal knowledge** | HR answers not written down anywhere yet |
+| **RAG** | Retrieval-augmented generation: search the content first, then answer from it |
+| **Thin slice** | A small first scope (a few questions, one domain) used to prove the approach |
+| **Sub-agent** | A specialised agent for one domain (e.g. benefits), called by a main routing agent |
+| **SuccessFactors** | SAP's HR system of record (deferred for Phase 1) |
 
 ---
 
@@ -198,5 +205,7 @@
 
 | Date | Change |
 |---|---|
-| 2026-10-06 | First version. Problem statement is a working assumption pending HR requirements. |
-| 2026-10-06 | SuccessFactors API scope verified against the SAP API reference guide (2H 2026). Key finding: use User Mode (self-only) permissions, not Admin Mode. |
+| 2026-10-06 | First version. Problem statement was a working assumption pending HR requirements. |
+| 2026-10-06 | SuccessFactors API scope verified against the SAP API reference guide (2H 2026). |
+| 2026-10-14 | Updated after HR requirements call #1. Scope is now **knowledge discovery, not personalised, no policy interpretation**; content is **SharePoint + HR-written documents**; channel is open (SharePoint HR hub vs Teams); SuccessFactors **deferred**; Discover → Analyze → Act roadmap added. |
+| 2026-10-14 | Enterprise sandbox access received. Platform described as the current design (not final). Personal names replaced with roles. |

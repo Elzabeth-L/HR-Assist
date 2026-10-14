@@ -1,7 +1,7 @@
 # HR Assist — Requirements Discovery Questions (HR Team Call)
 
 > **Meeting:** Requirements call with the HR team
-> **Date:** 2026-10-05
+> **Date:** Prepared 2026-10-05. Call #1 held the week of 2026-10-05. Main answers: not personalised, no policy interpretation, SharePoint content, channel to be decided by HR.
 > **Roles:** HR team = **product owner** · Employees = **users**
 
 **Goal of the call:** find out what problem HR wants to solve, who will use the assistant, what it should and shouldn't do, and what "done" looks like, before any technical work is scoped. The questions are written in plain, non-technical language.

@@ -2,7 +2,7 @@
 
 > **Deployment pattern:** Amazon Quick **Microsoft Teams extension**. Employees chat with the HR Assist agent inside Teams.
 > **Identity provider:** Okta, federated into AWS IAM Identity Center.
-> **Status:** Current priority deployment channel.
+> **Status:** Channel option. After HR call #1, HR is leaning towards the SharePoint HR hub; HR will decide whether Teams is also used. Escalation actions described here reflect the prototype (Gmail + Slack) and will be revisited.
 
 This guide lists everything needed to deploy HR Assist in Microsoft Teams: licences, access, configuration values, IAM permissions, admin approvals, rollout steps, known limitations and validation.
 

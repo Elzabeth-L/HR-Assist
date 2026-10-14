@@ -2,7 +2,7 @@
 
 > **Purpose:** Explain **where** access to SuccessFactors data is controlled for HR Assist, **who** sets up each part, and **how**. The aim is that each employee can only ever see their own data.
 > **Source:** *SAP SuccessFactors API Reference Guide*, 2H 2026 (2026-10-02). Page numbers are given as **(p. N)**.
-> **Status:** Design. Confirm the exact permission names in EBSCO's tenant.
+> **Status:** ⏸ **Deferred** (v1 is not personalised). Design kept for a future phase; confirm the exact permission names in EBSCO's tenant.
 
 ---
 

@@ -1,57 +1,57 @@
-# HR Assist — AI HR Chatbot on Amazon Quick
+# HR Assist — AI HR Knowledge Assistant
 
-An AI-powered HR assistant that answers employee HR questions instantly, inside Microsoft Teams, using the company's official HR policies and HR system. Built by UST for EBSCO on **Amazon Quick** (AWS).
-
-> **Status (2026-10-06):** Prototype complete · Waiting on HR requirements and Enterprise sandbox access
+An AI-powered assistant that helps EBSCO employees **find HR information instantly**, in everyday language, with every answer drawn from HR's own content and linked to its source. Designed and built by UST for EBSCO.
 
 ---
 
 ## The Problem
 
-- HR spends a lot of time answering the **same questions** about leave, holidays, WFH, benefits and payroll.
-- Policies are **spread across documents** and hard for employees to find. Answers often depend on location or employee type.
-- Personal questions ("how many leave days do I have left?") need someone in HR to **look up the HR system**.
-- There's no consistent way to **route** questions that need human judgment.
-
-*(Working understanding. It will be refined once HR shares formal requirements.)*
+- Employees ask HR the **same questions** again and again (vacation and leave policies, volunteer time off, interns, company cars, parental leave, scholarships), usually over **Teams, email or phone**.
+- Most answers **already exist on SharePoint**, but they take too many clicks to find, so employees don't search, or don't find what they need.
+- Some answers aren't written down anywhere: they **live in HR team members' heads**.
+- Questions often land on departmental **HR business partners**, whose role is consulting on bigger issues, and get forwarded around. There's no single place to get an answer.
 
 ## The Solution
 
-**HR Assist**, a custom chat agent on Amazon Quick that:
+A conversational **HR knowledge assistant** that:
 
 | | How |
 |---|---|
-| **Answers policy questions** with source references | Searches HR policy documents indexed from **Confluence** (retrieval-augmented generation) |
-| **Answers personal questions** *(planned)* | Looks up the asking employee's own record in **SAP SuccessFactors**, live and limited to approved fields |
-| **Escalates to HR** when unsure | Drafts an email to HR, sends it only after the employee confirms, and posts an anonymised alert to HR's Slack channel |
-| **Lives where employees work** | **Microsoft Teams** (priority); SharePoint embedding as a later option |
-| **Stays safe** | Never invents policy or personal data; no access to national IDs, bank, salary or medical data; company login (Okta) for identity |
+| **Finds the answer** | Searches HR's approved content (SharePoint policies plus HR-written "how do I…" guides) using retrieval-augmented generation: it searches first, then answers |
+| **Shows its source** | Quotes the relevant text and links to the original page, so employees can check it |
+| **Stays honest** | Answers only from HR content; says "I don't know" rather than guessing; points employees to their manager or HR when needed |
+| **Respects boundaries** | Doesn't interpret policy or make HR decisions; never accesses sensitive personal data |
+| **Lives where employees work** | Available in familiar places such as the SharePoint HR hub and/or Microsoft Teams, branded as EBSCO's own assistant |
 
 ```
-Employee (Teams) → HR Assist (Amazon Quick) ─┬─► HR policies (Confluence)        → cited answer
-                                             ├─► Employee record (SuccessFactors) → personal answer
-                                             └─► Escalation (Gmail + Slack)       → HR follows up
+Employee question ─► HR Knowledge Assistant ─► searches HR content (SharePoint + HR guides)
+                                             ├─► Found     → answer + link to the source
+                                             └─► Not found → "I don't know" + where to get help
 ```
 
-## Status
+## The Vision: Discover → Analyze → Act
 
-| Workstream | Status |
-|---|---|
-| Prototype: agent, knowledge base, Gmail + Slack escalation, test plan | ✅ Done |
-| HR requirements | ⏳ Pending |
-| Enterprise sandbox + Confluence knowledge base | ⏳ Waiting on access |
-| Microsoft Teams deployment | Designed, current priority |
-| SAP SuccessFactors integration | API scope verified against SAP API reference |
-| SharePoint embedding | Designed, paused |
+| Stage | What the assistant does | Example |
+|---|---|---|
+| **Discover** | Finds the right HR information and cites it | "Where is the vacation policy?" |
+| **Analyze** | Combines policy with the employee's own situation | "What's my vacation balance, and which leave type applies?" |
+| **Act** | Takes action on the employee's behalf, with their confirmation | "Submit that leave request for me" |
+
+The experience stays the same throughout; more capability is added behind it over time, as HR approves it.
+
+## Technology
+
+The design and prototype currently use **Amazon Quick** (AWS's agentic AI workspace) with Amazon Bedrock models. The final platform choice is subject to confirmation.
 
 ## Repository Guide
 
 | Folder | What's inside |
 |---|---|
-| [docs/01-overview](docs/01-overview/) | **[Project overview](docs/01-overview/project-overview.md)** (start here) · [Amazon Quick reference](docs/01-overview/amazon-quick-reference.md) (platform research and the agent's system prompt) |
-| [docs/02-planning](docs/02-planning/) | [Plan](docs/02-planning/plan-phase.md) · [Open questions](docs/02-planning/open-questions.md) · [HR requirements questions](docs/02-planning/hr-requirements-questions.md) |
-| [docs/03-knowledge-base](docs/03-knowledge-base/) | [Data sources: Confluence & SuccessFactors](docs/03-knowledge-base/kb-source-options.md) |
-| [docs/04-deployment](docs/04-deployment/) | [Teams guide](docs/04-deployment/teams.md) · [Teams flow diagram](docs/04-deployment/teams-architecture.html) · [SharePoint guide](docs/04-deployment/sharepoint.md) |
+| [docs/01-overview](docs/01-overview/) | **[Project overview](docs/01-overview/project-overview.md)** (start here) · [Amazon Quick reference](docs/01-overview/amazon-quick-reference.md) · [Quick Desktop scope](docs/01-overview/quick-desktop-scope.md) |
+| [docs/02-planning](docs/02-planning/) | [HR call #1 summary](docs/02-planning/hr-call-01-summary.md) · [Plan](docs/02-planning/plan-phase.md) · [Open questions](docs/02-planning/open-questions.md) · [HR requirements questions](docs/02-planning/hr-requirements-questions.md) |
+| [docs/03-knowledge-base](docs/03-knowledge-base/) | [Knowledge sources](docs/03-knowledge-base/kb-source-options.md) |
+| [docs/04-deployment](docs/04-deployment/) | [SharePoint guide](docs/04-deployment/sharepoint.md) · [Teams guide](docs/04-deployment/teams.md) · [Teams flow diagram](docs/04-deployment/teams-architecture.html) |
 | [docs/05-testing](docs/05-testing/) | [Test plan](docs/05-testing/test-plan.md) |
-| [docs/06-integrations](docs/06-integrations/) | [SuccessFactors API scope](docs/06-integrations/successfactors-api-scope.md) · [SuccessFactors access & roles](docs/06-integrations/successfactors-access-roles.md) |
+| [docs/06-integrations](docs/06-integrations/) | [Outlook integration](docs/06-integrations/outlook-integration.md) · [SuccessFactors API scope](docs/06-integrations/successfactors-api-scope.md) · [SuccessFactors access & roles](docs/06-integrations/successfactors-access-roles.md) |
+| [docs/07-architecture](docs/07-architecture/) | [Scalability & sub-agents](docs/07-architecture/scalability-and-subagents.md) |
 | [draft](draft/) | Original raw notes |
