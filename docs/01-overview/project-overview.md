@@ -126,6 +126,7 @@
 | 1. Requirements | Call #1: scope agreed | ✅ Done |
 | 2. Environment | Enterprise sandbox account | ✅ Available |
 | 3. Question list | HR shares the final questions (Excel) and documents | ⏳ Pending |
+| 3a. Quick proof of concept | Build in the Enterprise sandbox in parallel; Teams deployment first | In progress (needs Microsoft 365 connector access) |
 | 4. Analysis | Categorise questions: answered by SharePoint / needs new documentation / unclear | Next |
 | 5. Thin slice | Prove the assistant on about five questions in one or two domains | Planned |
 | 6. Expand by domain | HR experts test each domain while the next is built; sub-agents per domain if needed | Planned |
@@ -143,7 +144,8 @@
 - Research completed: Outlook integration, Quick Desktop scope, sub-agent architecture, and the SuccessFactors API scope (deferred).
 
 **Waiting on**
-- HR's **final question list** and documents (after HR's internal review).
+- HR's **final question list** and documents (after HR's internal review). The handover date has slipped twice.
+- **Corporate IT security approval** to connect the Quick sandbox to Microsoft 365 (Teams / Outlook / SharePoint).
 - HR's decision on the **channel** and **branding**.
 
 ---
@@ -152,7 +154,7 @@
 
 | Decision | Status |
 |---|---|
-| Build platform | Prototype and current design on **Amazon Quick**; final platform **not yet confirmed** |
+| Build platform | **Under evaluation:** Amazon Quick (prototype) and Microsoft Copilot Studio tested in parallel on the same thin slice; recommendation to HR after testing |
 | Phase 1 = **knowledge discovery**, **not personalised** | ✅ Agreed with HR |
 | **No policy interpretation**: quote the relevant text + link to the source | ✅ Agreed (where the line sits is to be confirmed) |
 | Content: **SharePoint** + new HR-written documents | ✅ Agreed |
@@ -174,7 +176,8 @@
 | Content gaps (undocumented knowledge) | Assistant can't answer | HR writing new documents; questions categorised by coverage |
 | No clear content owner | Answers go stale after policy changes | Define owners per domain; scheduled sync |
 | Channel undecided | Deployment work can't start | Both SharePoint and Teams designs documented |
-| Platform not confirmed | Rework if a different platform is chosen | Keep content, question sets and guardrails platform-neutral |
+| Microsoft 365 connector access needs a security review | Quick can't be tested with Teams / SharePoint until it's approved | Ticket raised through corporate IT; scope the PoC to built-in connectors and test data |
+| Platform not confirmed (Quick vs Copilot Studio) | Rework if a different platform is chosen; Microsoft environment not yet available | Keep content, question sets and guardrails platform-neutral; run the same thin slice on both |
 | Quoting vs interpreting is unclear | Answers may overstep HR's intent | Confirm the rule with HR; enforce it in the system prompt and tests |
 
 ---
@@ -209,3 +212,4 @@
 | 2026-10-06 | SuccessFactors API scope verified against the SAP API reference guide (2H 2026). |
 | 2026-10-14 | Updated after HR requirements call #1. Scope is now **knowledge discovery, not personalised, no policy interpretation**; content is **SharePoint + HR-written documents**; channel is open (SharePoint HR hub vs Teams); SuccessFactors **deferred**; Discover → Analyze → Act roadmap added. |
 | 2026-10-14 | Enterprise sandbox access received. Platform described as the current design (not final). Personal names replaced with roles. |
+| 2026-10-15 | Parallel platform evaluation added: Amazon Quick and Microsoft Copilot Studio. |

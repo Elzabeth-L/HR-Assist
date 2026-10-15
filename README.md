@@ -41,17 +41,18 @@ The experience stays the same throughout; more capability is added behind it ove
 
 ## Technology
 
-The design and prototype currently use **Amazon Quick** (AWS's agentic AI workspace) with Amazon Bedrock models. The final platform choice is subject to confirmation.
+Two platforms are being evaluated in parallel: **Amazon Quick** (AWS's agentic AI workspace, used for the prototype) and **Microsoft Copilot Studio** (native to EBSCO's Microsoft 365 environment). The final platform will be chosen after hands-on testing of both.
 
 ## Repository Guide
 
 | Folder | What's inside |
 |---|---|
-| [docs/01-overview](docs/01-overview/) | **[Project overview](docs/01-overview/project-overview.md)** (start here) · [Amazon Quick reference](docs/01-overview/amazon-quick-reference.md) · [Quick Desktop scope](docs/01-overview/quick-desktop-scope.md) |
+| [docs/01-overview](docs/01-overview/) | **[Project overview](docs/01-overview/project-overview.md)** (start here) · [Amazon Quick reference](docs/01-overview/amazon-quick-reference.md) · [Copilot Studio reference](docs/01-overview/copilot-studio-reference.md) |
 | [docs/02-planning](docs/02-planning/) | [HR call #1 summary](docs/02-planning/hr-call-01-summary.md) · [Plan](docs/02-planning/plan-phase.md) · [Open questions](docs/02-planning/open-questions.md) · [HR requirements questions](docs/02-planning/hr-requirements-questions.md) |
 | [docs/03-knowledge-base](docs/03-knowledge-base/) | [Knowledge sources](docs/03-knowledge-base/kb-source-options.md) |
 | [docs/04-deployment](docs/04-deployment/) | [SharePoint guide](docs/04-deployment/sharepoint.md) · [Teams guide](docs/04-deployment/teams.md) · [Teams flow diagram](docs/04-deployment/teams-architecture.html) |
 | [docs/05-testing](docs/05-testing/) | [Test plan](docs/05-testing/test-plan.md) |
 | [docs/06-integrations](docs/06-integrations/) | [Outlook integration](docs/06-integrations/outlook-integration.md) · [SuccessFactors API scope](docs/06-integrations/successfactors-api-scope.md) · [SuccessFactors access & roles](docs/06-integrations/successfactors-access-roles.md) |
 | [docs/07-architecture](docs/07-architecture/) | [Scalability & sub-agents](docs/07-architecture/scalability-and-subagents.md) |
+| [docs/08-platform-evaluation](docs/08-platform-evaluation/) | [Evaluation approach](docs/08-platform-evaluation/evaluation-approach.md) · [Amazon Quick vs Copilot Studio](docs/08-platform-evaluation/quick-vs-copilot-studio.md) |
 | [draft](draft/) | Original raw notes |

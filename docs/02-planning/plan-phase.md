@@ -41,8 +41,8 @@ This document records the current state of the HR Assist build, the options unde
 
 | Platform | Notes |
 |---|---|
-| **Amazon Quick** | Build platform. EBSCO is also evaluating Quick more widely (e.g. BI). |
-| Microsoft Copilot Studio | Previously noted as an alternative. Not pursued. |
+| **Amazon Quick** | Prototype platform; **under evaluation**. EBSCO is also evaluating Quick more widely (e.g. BI). |
+| **Microsoft Copilot Studio** | **Under evaluation in parallel**: native to EBSCO's Microsoft 365 environment. Microsoft environment and solution architect to be arranged. |
 
 ---
 
@@ -80,3 +80,12 @@ This document records the current state of the HR Assist build, the options unde
 
 1. **SharePoint HR hub embedding:** preferred by HR (pending confirmation).
 2. **Microsoft Teams extension:** alternative or additional channel.
+
+---
+
+## 9. Next Steps
+
+1. **HR documents:** HR shares the policy documents and FAQ list → UST analyses them → **discovery sessions are held based on that question list** (no discovery meetings until then).
+2. **Quick proof of concept:** continue in the Enterprise sandbox. Microsoft 365 connector access depends on a corporate IT security review (ticket raised).
+3. **Copilot Studio:** the environment is being arranged in parallel.
+4. **Industry research (while waiting):** review AI-assisted HR solutions on the market (e.g. **Leena AI**) and product demos, to find feature ideas HR may not have considered.

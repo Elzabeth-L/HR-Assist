@@ -523,7 +523,15 @@ The generic Teams Admin Center steps (Manage apps, admin consent, app setup/avai
 
 ---
 
-## 15. Open Items / Next Steps
+## 15. Quick Desktop — Scope Check
+
+We checked whether HR Assist needs **Quick Desktop**. **It doesn't.** Agents, knowledge bases, action connectors, remote MCP connectors, the Teams extension and SharePoint embedding all run at the account level through the web console.
+
+Quick Desktop is only needed for **local** capabilities: chatting with local files, local indexing, local background tasks, and **local MCP servers** (which spawn a process such as `python` / `npx` on the machine). **Remote MCP servers** (URL + OAuth) work from any device, so a cloud-hosted SuccessFactors proxy wouldn't need Desktop.
+
+---
+
+## 16. Open Items / Next Steps
 
 - [ ] Decide whether to pursue the SharePoint embedding path (Section 13) now or after the Teams extension is validated.
 - [ ] Confirm with AWS account team / Quick pricing page how JIT-provisioned users are licensed at scale before any company-wide embed rollout.

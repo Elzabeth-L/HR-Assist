@@ -305,6 +305,7 @@ Record each value as you create it. **Never store secrets in this file.** Use a 
 | AP5 | Pilot group and rollout scope | HR stakeholder | ☐ |
 | AP6 | Data handling review: KB content, Gmail/Slack escalation, Slack redaction | Security / Compliance | ☐ |
 | AP7 | Action permission settings (Always Ask vs Trust) | Security + HR | ☐ |
+| AP8 | Security review of the Quick ↔ Microsoft 365 connector (what data is sent to AWS), raised through a corporate IT ticket. Needed even for sandbox testing. | Corporate IT / Security | ☐ |
 
 ---
 

@@ -13,6 +13,7 @@
 - [4. Connector vs Extension](#4-connector-vs-extension)
 - [5. Recommendation](#5-recommendation)
 - [6. Verification Steps (Sandbox)](#6-verification-steps-sandbox)
+- [7. Open Questions](#7-open-questions)
 
 ---
 
@@ -105,3 +106,10 @@ This gives **human-in-the-loop** by design, with **no new infrastructure**.
 1. **Automate triggers:** Amazon Quick Automate → create or open a **Project** → **Deployment** page → **Create Trigger** → *Step 1: Set Trigger*. Record which trigger options actually appear.
 2. **Draft capability:** connect the Outlook action connector to a test agent → ask it to draft a reply to a test email → confirm the draft lands in **Drafts** and nothing is sent automatically.
 3. **Action permissions:** confirm the "send" action (if any) can be set to **Always Ask**, or disabled.
+
+---
+
+## 7. Open Questions
+
+- [ ] **Which mailbox?** A connector reads the mailbox of **whoever authenticates**. An HR-inbox use case would need HR's own account or a shared HR mailbox, not a project team member's mailbox.
+- [ ] **Security approval:** connecting Quick to Microsoft 365 (mail, Teams) needs a corporate IT security review, covering what data is sent to AWS and the read/write scope.

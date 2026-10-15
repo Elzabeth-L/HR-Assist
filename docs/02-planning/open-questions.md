@@ -11,7 +11,7 @@ These are for the project sponsor or lead to answer. The platform documentation 
 
 | # | Question | Status | Notes |
 |---|---|---|---|
-| 1.1 | Platform confirmation: are we building on **Amazon Quick**? | Confirmed | Build is on Amazon Quick (formerly QuickSight / Quick Suite). |
+| 1.1 | Platform confirmation: are we building on **Amazon Quick**? | Under evaluation | Amazon Quick (prototype) and Microsoft Copilot Studio are being evaluated in parallel. |
 | 1.2 | Are the expectations for the engagement clear? | Answered | Phase 1 = knowledge discovery, not personalised, no policy interpretation (HR call #1). Success criteria still to agree. |
 | 1.3 | Which team will we be working with? | Answered | EBSCO HR (HR leads and the HR working group), the engagement lead (RM), AWS and a solution architect. |
 | 1.4 | Who do we contact for requirements? | Answered | The EBSCO HR leads. |
