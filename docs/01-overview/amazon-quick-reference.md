@@ -539,3 +539,13 @@ Quick Desktop is only needed for **local** capabilities: chatting with local fil
 - [ ] Decide on escalation routing pattern for scale (single Gmail inbox vs Jira category-routed tickets vs Airtable approval queue) before rolling out beyond a pilot group.
 - [ ] Verify current Free-tier connector availability directly in the console, since some (Google Drive KB, Slack action) worked despite tier documentation suggesting Professional/Enterprise requirements — personal/standalone signups appear more permissive than the org-provisioned tier table implies.
 - [ ] Pull exact current Microsoft Learn citations for Teams Admin Center app-management steps if a fully sourced reference is needed for that half of the process.
+
+---
+
+## 17. Quick Account vs Quick Users
+
+- There's **one Amazon Quick account** (Enterprise). Connectors, the Space, the agent, its instructions and any actions are configured **once, centrally**, by the builder / admin.
+- Employees (including users provisioned just-in-time through Teams or embedding) become **users in that same account**. They don't get their own configuration and don't connect to SharePoint themselves.
+- **Individual to each employee:** their identity (sign-in, and the per-question SharePoint permission check), and their own conversation history.
+- **Shared:** the agent, its knowledge sources, actions and instructions.
+

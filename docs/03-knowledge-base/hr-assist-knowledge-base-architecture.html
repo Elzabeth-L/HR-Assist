@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Assist — Knowledge Base Source Architecture</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<style>
+  :root{
+    --ink:#1b2430;
+    --ink-soft:#4a5568;
+    --paper:#f7f8fa;
+    --panel:#ffffff;
+    --rule:#dfe3e8;
+    --sp-blue:#0057d8;
+    --ext-amber:#b8720a;
+    --od-rose:#a8274a;
+    --core-teal:#0f7a6e;
+    --accent:#0f7a6e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: Georgia, "Iowan Old Style", serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  header{
+    padding:52px 8vw 30px;
+    border-bottom:1px solid var(--rule);
+    background:var(--panel);
+  }
+  header h1{
+    font-size:2rem;
+    line-height:1.25;
+    margin:0 0 10px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  header p{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    color:var(--ink-soft);
+    max-width:68ch;
+    line-height:1.55;
+    margin:0;
+    font-size:1rem;
+  }
+  .legend-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:20px;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .legend-row span{ display:flex; align-items:center; gap:7px; }
+  .dot{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+
+  main{ max-width:1300px; margin:0 auto; padding:40px 8vw 80px; }
+
+  section.block{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:10px;
+    padding:30px 32px 28px;
+    margin-bottom:34px;
+  }
+  section.block h2{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:1rem;
+    font-weight:700;
+    margin:0 0 6px;
+  }
+  section.block .subtitle{
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.9rem;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+    line-height:1.5;
+    max-width:80ch;
+  }
+  .diagram-wrap{ overflow-x:auto; padding:8px 4px 4px; }
+  .diagram-wrap svg{ max-width:none !important; }
+
+  .cards{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px,1fr));
+    gap:16px;
+    margin-top:4px;
+  }
+  .card{
+    border:1px solid var(--rule);
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .card.sp{ border-left-color: var(--sp-blue); }
+  .card.ext{ border-left-color: var(--ext-amber); }
+  .card.od{ border-left-color: var(--od-rose); }
+  .card h3{ font-size:0.92rem; margin:0 0 8px; color:var(--ink); }
+  .card p{ font-size:0.83rem; color:var(--ink-soft); margin:0 0 6px; line-height:1.5; }
+  .card p:last-child{ margin-bottom:0; }
+  .card .tag{
+    display:inline-block;
+    font-size:0.7rem;
+    font-weight:700;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:8px;
+  }
+  .tag.chosen{ background:#e3f3ee; color:#0f5c50; }
+  .tag.blocked{ background:#fdeceb; color:#9c2b1f; }
+  .tag.action{ background:#fff4e0; color:#8a5a00; }
+
+  footer{
+    max-width:1300px;
+    margin:0 auto;
+    padding:0 8vw 60px;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>HR Assist — Knowledge Base Source Architecture</h1>
+  <p>How each type of HR content source connects into Amazon Quick, the access decisions involved at each one, and how per-user permissions are enforced once the agent is live.</p>
+  <div class="legend-row">
+    <span><span class="dot" style="background:var(--sp-blue)"></span>SharePoint (internal)</span>
+    <span><span class="dot" style="background:var(--ext-amber)"></span>External public site</span>
+    <span><span class="dot" style="background:var(--od-rose)"></span>Personal OneDrive (unstable)</span>
+    <span><span class="dot" style="background:var(--core-teal)"></span>Core platform (Space / Agent)</span>
+  </div>
+</header>
+
+<main>
+
+  <section class="block">
+    <h2>Full source-to-agent architecture</h2>
+    <p class="subtitle">Three distinct source types, each with its own access path, all converging into the same Space(s) that power one HR Assist agent — with permission enforcement happening per-employee, at the moment they ask a question, not at indexing time.</p>
+
+    <div class="diagram-wrap">
+      <pre class="mermaid">
+graph TD
+    classDef sp fill:#eaf1fc,stroke:#0057d8,color:#1b2430,stroke-width:1.5px
+    classDef ext fill:#fdf3e3,stroke:#b8720a,color:#1b2430,stroke-width:1.5px
+    classDef od fill:#fbe9ee,stroke:#a8274a,color:#1b2430,stroke-width:1.5px
+    classDef core fill:#e3f3ee,stroke:#0f7a6e,color:#1b2430,stroke-width:2px
+    classDef blocked fill:#fdeceb,stroke:#9c2b1f,color:#6b1711,stroke-width:1.5px,stroke-dasharray: 4 3
+    classDef chosen fill:#ffffff,stroke:#0f7a6e,color:#1b2430,stroke-width:2px
+
+    subgraph SP["SHAREPOINT — Internal Sites"]
+      direction TB
+      SPAuth["One-time tenant OAuth<br/>SharePoint admin authorizes<br/>the Quick connector app"]
+      SPAuth --> SPHave["Sites already accessible<br/>(EISHRHub, EISHRLearningDev,<br/>eiscompensation, etc.)"]
+      SPAuth --> SPDeclined["Sites where YOUR personal<br/>access request was declined"]
+      SPDeclined --> SPReframe["Reframe the ask:<br/>request APP-level permission<br/>(e.g. Sites.Selected) from the<br/>site owner — not personal access"]
+      SPReframe --> SPHave
+    end
+
+    subgraph EXT["EXTERNAL PUBLIC SITE — ebscochoice.com"]
+      direction TB
+      ExtChoice{"Two possible approaches"}
+      ExtChoice --> Crawler["Option A: Web Crawler connector<br/>auto-discovers + auto-cites<br/>pages and PDFs"]
+      Crawler --> ExtBlocked["BLOCKED — bot protection<br/>returns HTTP 403<br/>Needs site owner/IT (or 3rd-party<br/>vendor) to allowlist the crawler<br/>by a custom User-Agent string"]
+      ExtChoice --> Manual["Option B: Manual PDF upload<br/>— CHOSEN FOR NOW —<br/>download known PDFs, upload<br/>directly into the Space"]
+    end
+
+    subgraph OD["PERSONAL ONEDRIVE FILES"]
+      direction TB
+      ODFile["e.g. personal OneDrive doc,<br/>tribal-knowledge answers not<br/>yet written up officially"]
+      ODFile --> ODRisk["Not a stable source:<br/>tied to one person, can break<br/>if renamed/moved/offboarded"]
+      ODRisk --> ODMigrate["HR writes it up properly into<br/>a real shared SharePoint library<br/>before it's used as a source"]
+      ODMigrate --> SPHave
+    end
+
+    SPHave --> SpaceNode["Amazon Quick Space(s)<br/>topic-scoped: Benefits, Compensation,<br/>L&D, Policies, etc."]
+    Manual --> SpaceNode
+    ExtBlocked -.->|if resolved later, swap in| SpaceNode
+
+    SpaceNode --> Agent["HR Assist Chat Agent"]
+    Agent --> Deploy["Deployed via Teams extension<br/>and/or SharePoint embedding"]
+    Deploy --> Ask["Employee asks a question"]
+    Ask --> ACL{"Per-user permission check,<br/>at the moment of the question<br/>— not at indexing time"}
+    ACL -->|Employee has access<br/>to the source document| Good["Answer shown,<br/>with citation"]
+    ACL -->|Employee lacks access<br/>to the source document| Blocked2["Filtered out —<br/>no answer or citation shown,<br/>even though it's indexed"]
+
+    class SPAuth,SPHave,SPDeclined,SPReframe sp
+    class ExtChoice,Crawler,Manual ext
+    class ExtBlocked blocked
+    class ODFile,ODRisk,ODMigrate od
+    class SpaceNode,Agent,Deploy core
+    class Good chosen
+      </pre>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>The decision at each source type, side by side</h2>
+    <p class="subtitle">What's actually being decided for each category, and why it was resolved the way it was.</p>
+    <div class="cards">
+      <div class="card sp">
+        <span class="tag action">Access-level fix</span>
+        <h3>SharePoint — declined access</h3>
+        <p><strong>Problem:</strong> personal access request to a restricted site was denied.</p>
+        <p><strong>Fix:</strong> the connector only needs an <em>app-level</em> permission grant from the site owner/IT — not the builder's personal membership. Re-ask framed as "authorize the Quick connector," not "add me."</p>
+      </div>
+      <div class="card ext">
+        <span class="tag blocked">Blocked — Option A</span>
+        <h3>ebscochoice.com — Web Crawler</h3>
+        <p><strong>Problem:</strong> site's bot protection returns HTTP 403 to all seed URLs.</p>
+        <p><strong>Fix (if pursued later):</strong> identify who actually runs the site (internal vs. vendor), ask them to allowlist a specific, unique crawler User-Agent string — not a broad IP range.</p>
+      </div>
+      <div class="card ext">
+        <span class="tag chosen">Chosen — Option B</span>
+        <h3>ebscochoice.com — Manual upload</h3>
+        <p><strong>Decision:</strong> download the specific known PDFs from the spreadsheet and upload them directly into the Space.</p>
+        <p><strong>Why:</strong> low document count, project is in an intentionally simple early phase, avoids depending on an external party's security team's timeline.</p>
+      </div>
+      <div class="card od">
+        <span class="tag action">Needs HR action</span>
+        <h3>Personal OneDrive tribal knowledge</h3>
+        <p><strong>Problem:</strong> answers exist only in one person's personal OneDrive doc — fragile and unofficial.</p>
+        <p><strong>Fix:</strong> HR writes these up properly into a real, shared SharePoint library first; only then does it get indexed like any other SharePoint source.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>The one thing worth emphasizing to stakeholders</h2>
+    <p class="subtitle">Security enforcement happens per employee, every time — not once, at setup.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Indexing ≠ access</h3>
+        <p>A document being indexed (searchable by the agent at all) is a one-time, admin-level step. Whether a <em>specific employee</em> can actually see that document's content in an answer is checked fresh, every single question, against that employee's own real SharePoint permissions.</p>
+      </div>
+      <div class="card">
+        <h3>No bypass, for anyone</h3>
+        <p>Even the person who built the agent and configured every connector gets filtered out of content they personally don't have SharePoint access to. Admin/builder status on Quick has no bearing on SharePoint-level permissions — they're separate systems that only intersect through this per-query check.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  HR Assist — knowledge base source architecture, reflecting the current state of the SharePoint, ebscochoice.com, and tribal-knowledge integration work.
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#eef2f6',
+      primaryTextColor: '#1b2430',
+      primaryBorderColor: '#c7ccd3',
+      lineColor: '#8a93a0',
+      fontFamily: '-apple-system, Segoe UI, Helvetica, Arial, sans-serif',
+      fontSize: '13px'
+    },
+    flowchart: {
+      curve: 'basis',
+      nodeSpacing: 36,
+      rankSpacing: 54,
+      padding: 14
+    }
+  });
+</script>
+
+</body>
+</html>

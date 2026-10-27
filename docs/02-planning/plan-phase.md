@@ -14,7 +14,8 @@ This document records the current state of the HR Assist build, the options unde
 | Prototype knowledge base | Google Drive (sample policies) |
 | Prototype actions | Gmail escalation + Slack alert. **To be revisited:** EBSCO has no ticketing system and HR questions currently go through Teams and email. |
 | Requirements | Call #1 held: **knowledge discovery, not personalised, no policy interpretation** |
-| Next input | HR's final question list (Excel) and policy documents |
+| HR knowledge workbook | ✅ Received and analysed (about 90 Q&A rows, routing rules, always-escalate topics) |
+| Sandbox agent | Behaviour-first agent (instructions + routing) built in the Enterprise sandbox; empty Space linked |
 
 ---
 
@@ -65,10 +66,10 @@ This document records the current state of the HR Assist build, the options unde
 
 | # | Question | Owner | Status |
 |---|---|---|---|
-| 7.1 | Final question list and policy documents | HR working group | ⏳ Pending |
+| 7.1 | Final question list and policy documents | HR working group | ✅ Received |
 | 7.2 | Channel: SharePoint HR hub, Teams or both | HR | Open |
 | 7.3 | Where quoting a policy ends and interpreting it begins | HR | Open |
-| 7.4 | Fallback when unanswered (no ticketing system) | HR + UST | Open |
+| 7.4 | Fallback when unanswered (no ticketing system) | HR + UST | ✅ Routing rules from the workbook |
 | 7.5 | Content owners per domain; who updates content when policies change | HR | Open |
 | 7.6 | First thin-slice domain(s) | HR + UST | After 7.1 |
 | 7.7 | Assistant name and branding | HR | Open |
@@ -89,3 +90,5 @@ This document records the current state of the HR Assist build, the options unde
 2. **Quick proof of concept:** continue in the Enterprise sandbox. Microsoft 365 connector access depends on a corporate IT security review (ticket raised).
 3. **Copilot Studio:** the environment is being arranged in parallel.
 4. **Industry research (while waiting):** review AI-assisted HR solutions on the market (e.g. **Leena AI**) and product demos, to find feature ideas HR may not have considered.
+5. **Workbook follow-ups:** upload the benefits PDFs to the Space; send one request to EBSCO IT (admin-managed Quick app registration with `Sites.Selected`, per-site read grants for all HR sites, organisation-wide consent for the permission-check app); HR refreshes outdated sources and moves OneDrive content to SharePoint; group questions into one knowledge base per topic; extend the routing table as the question list grows.
+6. **Testing:** re-run the escalation scenarios once the instructions are final, and test per-employee SharePoint permissions before launch.

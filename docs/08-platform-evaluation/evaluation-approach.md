@@ -59,6 +59,12 @@ While Copilot Studio access is being arranged, a proof of concept is being built
 | **Built-in connectors only** | Microsoft 365 connectors rather than custom connectors (e.g. SuccessFactors) |
 | **Personal-account test** | A personal Gmail account connected to a Free-tier Quick account could read, send and receive mail through the Quick interface. The Outlook connector is expected to behave similarly once access is enabled. |
 
+**Progress so far:**
+- Behaviour-first agent built (instructions, routing, escalation) and tested; vague-concern handling refined.
+- Empty Space created and linked to the agent.
+- Web Crawler on the public benefits site was blocked (HTTP 403), so those PDFs will be uploaded manually.
+- SharePoint needs **admin-managed** setup (document-level permissions) and per-site app grants.
+
 ---
 
 ## 5. Scoring Sheet

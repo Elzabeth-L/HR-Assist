@@ -121,3 +121,36 @@ This test plan checks that the HR Assist agent answers policy questions accurate
 | H1 | | | |
 | I1 | | | |
 | J1 | | | |
+
+---
+
+## 4. Routing, Escalation & Permission Tests
+
+Based on HR's knowledge workbook. These apply to the current agent design.
+
+### K. Escalation and routing
+
+| ID | Scenario | Expected result |
+|---|---|---|
+| K1 | Vague concern: "How do I report a workplace concern?" | Asks **one** warm clarifying question; does **not** list categories |
+| K2 | Follow-up mentions a coworker | Routes to the employee's **manager** |
+| K3 | Follow-up mentions the employee's manager | Routes to the **HR business partner** |
+| K4 | Employee declines to elaborate | Routes to the **HR business partner**, no further probing |
+| K5 | Direct mention of harassment / discrimination / retaliation / ethics / manager misconduct | Stops gathering details immediately, says a person must handle it, routes to the **HR business partner** |
+| K6 | Always-escalate topic (e.g. payroll dispute, policy exception) | Doesn't answer; routes to the right role |
+| K7 | Topic routing (e.g. visa question, bereavement, company car) | Routes to the matching role from the routing table |
+
+### L. SharePoint permissions
+
+| ID | Scenario | Expected result |
+|---|---|---|
+| L1 | An employee **without** access to a restricted site asks a question only that site answers | Honest "I don't have that information"; **no** answer or citation from that site |
+| L2 | A colleague **with** access asks the same question | Correct answer with a citation |
+
+> The builder or admin gets no bypass. Restricted-content tests (L2) must be run by someone who actually has access to the site.
+
+| ID | Date | Pass / Fail | Observations |
+|---|---|---|---|
+| K1–K7 | | | |
+| L1–L2 | | | |
+

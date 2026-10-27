@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Assist — Knowledge Sources & Access</title>
+<style>
+  body{margin:0;background:#f5f7fa;color:#1b2430;font-family:Aptos,"Segoe UI",-apple-system,Helvetica,Arial,sans-serif}
+  .page{max-width:1240px;margin:0 auto;padding:32px 28px 40px}
+  h1{font-size:28px;margin:0 0 6px}
+  .tag{color:#5b6675;margin:0 0 18px;font-size:15px}
+  .card{background:#fff;border:1px solid #e3e7ec;border-radius:14px;padding:18px}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 14px;font-size:13px;color:#5b6675}
+  .legend span{display:flex;align-items:center;gap:8px}
+  .sw{width:16px;height:16px;border-radius:4px;border:2px solid}
+  svg{width:100%;height:auto;display:block}
+  @media print{body{background:#fff}.card{border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>HR Assist — Knowledge Sources &amp; Access</h1>
+  <p class="tag">How each content source reaches the assistant, and how every answer is checked against the employee's own SharePoint access.</p>
+
+  <div class="card">
+    <div class="legend">
+      <span><span class="sw" style="background:#ffffff;border-color:#9aa4b1"></span>Information</span>
+      <span><span class="sw" style="background:#fff4e0;border-color:#c77700"></span>Action needed</span>
+      <span><span class="sw" style="background:#e6f6ec;border-color:#1f9d55"></span>Working / chosen path</span>
+      <span><span class="sw" style="background:#fdecec;border-color:#c53030"></span>Blocked</span>
+    </div>
+
+    <svg viewBox="0 0 1200 1290" role="img" aria-label="Three source lanes converging into the knowledge base, agent, channel and per-employee access check">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5b6675"/>
+        </marker>
+      </defs>
+      <style>
+        .h{font:800 15px Aptos,"Segoe UI",sans-serif;letter-spacing:.06em;fill:#5b6675}
+        .t{font:700 17px Aptos,"Segoe UI",sans-serif;fill:#1b2430}
+        .s{font:400 13.5px Aptos,"Segoe UI",sans-serif;fill:#4a5568}
+        .row{font:700 12px Aptos,"Segoe UI",sans-serif;fill:#9aa4b1;letter-spacing:.12em}
+        .ln{stroke:#5b6675;stroke-width:2.2;fill:none}
+        .info{fill:#ffffff;stroke:#9aa4b1;stroke-width:2}
+        .amb{fill:#fff4e0;stroke:#c77700;stroke-width:2}
+        .grn{fill:#e6f6ec;stroke:#1f9d55;stroke-width:2}
+        .red{fill:#fdecec;stroke:#c53030;stroke-width:2}
+      </style>
+
+      <!-- Row labels -->
+      <text x="20" y="160" class="row" transform="rotate(-90 20 160)" text-anchor="middle">SOURCE</text>
+      <text x="20" y="300" class="row" transform="rotate(-90 20 300)" text-anchor="middle">CONNECT</text>
+      <text x="20" y="440" class="row" transform="rotate(-90 20 440)" text-anchor="middle">ACCESS</text>
+
+      <!-- Lane headers -->
+      <text x="220" y="60" text-anchor="middle" class="h">SHAREPOINT</text>
+      <text x="600" y="60" text-anchor="middle" class="h">EBSCOCHOICE.COM</text>
+      <text x="980" y="60" text-anchor="middle" class="h">PERSONAL ONEDRIVE</text>
+
+      <!-- Lane 1: SharePoint -->
+      <rect x="60" y="110" width="320" height="100" rx="12" class="info"/>
+      <text x="220" y="152" text-anchor="middle" class="t">Internal HR sites</text>
+      <text x="220" y="176" text-anchor="middle" class="s">10+ site collections · most content</text>
+
+      <rect x="60" y="250" width="320" height="100" rx="12" class="amb"/>
+      <text x="220" y="292" text-anchor="middle" class="t">Admin-managed connector</text>
+      <text x="220" y="316" text-anchor="middle" class="s">Per-site app grant (Sites.Selected) needed</text>
+
+      <rect x="60" y="390" width="320" height="100" rx="12" class="grn"/>
+      <text x="220" y="432" text-anchor="middle" class="t">Indexed with permissions</text>
+      <text x="220" y="456" text-anchor="middle" class="s">One knowledge base per HR topic</text>
+
+      <line x1="220" y1="210" x2="220" y2="246" class="ln" marker-end="url(#a)"/>
+      <line x1="220" y1="350" x2="220" y2="386" class="ln" marker-end="url(#a)"/>
+
+      <!-- Lane 2: ebscochoice.com -->
+      <rect x="440" y="110" width="320" height="100" rx="12" class="info"/>
+      <text x="600" y="152" text-anchor="middle" class="t">Public benefits site</text>
+      <text x="600" y="176" text-anchor="middle" class="s">A handful of benefits PDFs</text>
+
+      <rect x="440" y="250" width="320" height="100" rx="12" class="red"/>
+      <text x="600" y="292" text-anchor="middle" class="t">Web Crawler blocked</text>
+      <text x="600" y="316" text-anchor="middle" class="s">HTTP 403 from the site's protection</text>
+
+      <rect x="440" y="390" width="320" height="100" rx="12" class="grn"/>
+      <text x="600" y="432" text-anchor="middle" class="t">Manual PDF upload</text>
+      <text x="600" y="456" text-anchor="middle" class="s">Uploaded to the Space, source in file name</text>
+
+      <line x1="600" y1="210" x2="600" y2="246" class="ln" marker-end="url(#a)"/>
+      <line x1="600" y1="350" x2="600" y2="386" class="ln" marker-end="url(#a)"/>
+
+      <!-- Lane 3: OneDrive -->
+      <rect x="820" y="110" width="320" height="100" rx="12" class="info"/>
+      <text x="980" y="152" text-anchor="middle" class="t">Personal OneDrive files</text>
+      <text x="980" y="176" text-anchor="middle" class="s">Tied to one person · unofficial</text>
+
+      <rect x="820" y="250" width="320" height="100" rx="12" class="red"/>
+      <text x="980" y="292" text-anchor="middle" class="t">Not usable as-is</text>
+      <text x="980" y="316" text-anchor="middle" class="s">Not a stable, shared source</text>
+
+      <rect x="820" y="390" width="320" height="100" rx="12" class="amb"/>
+      <text x="980" y="432" text-anchor="middle" class="t">HR moves to SharePoint</text>
+      <text x="980" y="456" text-anchor="middle" class="s">Then indexed like other SharePoint content</text>
+
+      <line x1="980" y1="210" x2="980" y2="246" class="ln" marker-end="url(#a)"/>
+      <line x1="980" y1="350" x2="980" y2="386" class="ln" marker-end="url(#a)"/>
+
+      <!-- Convergence -->
+      <path d="M220 490 V530 H560 V566" class="ln" marker-end="url(#a)"/>
+      <line x1="600" y1="490" x2="600" y2="566" class="ln" marker-end="url(#a)"/>
+      <path d="M980 490 V530 H640 V566" class="ln" marker-end="url(#a)"/>
+
+      <!-- Shared pipeline -->
+      <rect x="400" y="570" width="400" height="80" rx="12" class="grn"/>
+      <text x="600" y="605" text-anchor="middle" class="t">Knowledge bases in one Space</text>
+      <text x="600" y="629" text-anchor="middle" class="s">Synced daily · linked to the agent</text>
+      <line x1="600" y1="650" x2="600" y2="686" class="ln" marker-end="url(#a)"/>
+
+      <rect x="400" y="690" width="400" height="80" rx="12" class="info"/>
+      <text x="600" y="725" text-anchor="middle" class="t">HR Assist agent</text>
+      <text x="600" y="749" text-anchor="middle" class="s">Answers only from HR content · routes the rest</text>
+      <line x1="600" y1="770" x2="600" y2="806" class="ln" marker-end="url(#a)"/>
+
+      <rect x="400" y="810" width="400" height="80" rx="12" class="info"/>
+      <text x="600" y="845" text-anchor="middle" class="t">Teams / SharePoint HR hub</text>
+      <text x="600" y="869" text-anchor="middle" class="s">Where employees ask</text>
+      <line x1="600" y1="890" x2="600" y2="926" class="ln" marker-end="url(#a)"/>
+
+      <rect x="400" y="930" width="400" height="70" rx="12" class="info"/>
+      <text x="600" y="972" text-anchor="middle" class="t">Employee asks a question</text>
+      <line x1="600" y1="1000" x2="600" y2="1036" class="ln" marker-end="url(#a)"/>
+
+      <!-- Decision diamond -->
+      <polygon points="600,1040 760,1110 600,1180 440,1110" class="amb"/>
+      <text x="600" y="1104" text-anchor="middle" class="t">Can this employee</text>
+      <text x="600" y="1126" text-anchor="middle" class="t">open the source?</text>
+
+      <path d="M440 1110 H250 V1196" class="ln" marker-end="url(#a)"/>
+      <text x="345" y="1100" text-anchor="middle" class="s">Yes</text>
+      <path d="M760 1110 H950 V1196" class="ln" marker-end="url(#a)"/>
+      <text x="855" y="1100" text-anchor="middle" class="s">No</text>
+
+      <rect x="90" y="1200" width="320" height="70" rx="12" class="grn"/>
+      <text x="250" y="1242" text-anchor="middle" class="t">Answer shown with citation</text>
+
+      <rect x="790" y="1200" width="320" height="70" rx="12" class="red"/>
+      <text x="950" y="1242" text-anchor="middle" class="t">Filtered out · no answer shown</text>
+    </svg>
+  </div>
+</div>
+</body>
+</html>
